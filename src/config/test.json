@@ -1,0 +1,23 @@
+{
+  "useMinify": false,
+  "baseUrl": "http://unit-test.groupe.loco-local.net",
+  "googleCredentialsFilePath": "/home/chenzo/Documents/Site web loco local/membres-google-credentials-local.json",
+  "spreadSheetId": "1m6gKaCgdNRBS3jw1xWzAcwiAL7SLQ2ptsyYOb9AjmCA",
+  "db": {
+    "database": "gr-test",
+    "user": "gr-test",
+    "password": "gr-test",
+    "options": {
+      "dialect" : "sqlite",
+      "host": "localhost",
+      "storage": "./groupe-achat.sqlite",
+      "logging": false
+    }
+  },
+  "authentication":{
+    "jwtSecret": "e530d549-1943-40fe-afaa-cb21d10e39e5"
+  },
+  "sendgrid": "mock",
+  "noCompress": true,
+  "port": 5300
+}

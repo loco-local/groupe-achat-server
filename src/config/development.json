@@ -1,0 +1,27 @@
+{
+  "useMinify": false,
+  "baseUrl": "http://localhost:8080",
+  "googleCredentialsFilePath": "/home/chenzo/Documents/Site web loco local/membres-google-credentials-local.json",
+  "spreadSheetId": "1m6gKaCgdNRBS3jw1xWzAcwiAL7SLQ2ptsyYOb9AjmCA",
+  "imageBasePath": "/tmp",
+  "db": {
+    "database": "yatikekun",
+    "user": "yatikekun",
+    "password": "yatikekun",
+    "options": {
+      "dialect": "sqlite",
+      "host": "localhost",
+      "storage": "/home/chenzo/Projects/groupe-achat/groupe-achat-server/groupe-achat.sqlite",
+      "logging": true
+    }
+  },
+  "authentication": {
+    "jwtSecret": "d9304651-fb3c-4177-8635-dcda56672bc7"
+  },
+  "sendgrid": "mock",
+  "recaptchaV3Key" : "",
+  "fb": "",
+  "appId": "",
+  "fbGroupId": "",
+  "fbAccessToken" : ""
+}
