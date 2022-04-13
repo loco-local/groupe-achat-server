@@ -11,6 +11,7 @@ const isAuthenticated = require('../policy/isAuthenticated')
 // const isArdoiseUser = require('../policy/isArdoiseUser')
 // const isOwnerArdoiseUserOrAdmin = require('../policy/isOwnerArdoiseUserOrAdmin')
 const isAdmin = require('../policy/isAdmin')
+const ProductController = require("../controller/ProductController");
 
 // router.post(
 //   '/api/register',
@@ -36,6 +37,11 @@ router.post(
 router.post(
     '/change-password',
     AuthenticationController.changePassword
+)
+
+router.get(
+    '/products',
+    ProductController.list
 )
 
 module.exports = router
