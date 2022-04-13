@@ -1,5 +1,7 @@
 node_modules
+./groupe-achat.sqlite
 groupe-achat.sqlite
+*.sqlite
 .idea
 src/config/development.json
 /src/config/development.json
