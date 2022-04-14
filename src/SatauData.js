@@ -1,0 +1,30 @@
+const indexes = {
+    maker: 1,
+    name: 2,
+    category: 3,
+    internalCode: 4,
+    qtyInBox: 6,
+    format: 7,
+    price: 8
+}
+const SatauData = {
+    formatEntry: function (data) {
+        return {
+            provider: "Satau",
+            name: data[SatauData._properyName(indexes.name)],
+            category: data[SatauData._properyName(indexes.category)],
+            maker: data[SatauData._properyName(indexes.maker)],
+            internalCode: data[SatauData._properyName(indexes.internalCode)],
+            qtyInBox: data[SatauData._properyName(indexes.qtyInBox)],
+            format: data[SatauData._properyName(indexes.format)],
+            price: data[SatauData._properyName(indexes.price)],
+            isAvailable: true,
+            createdAt: new Date(),
+            updatedAt: new Date()
+        }
+    },
+    _properyName: function (index) {
+        return "__EMPTY_" + index
+    }
+}
+module.exports = SatauData

@@ -44,4 +44,9 @@ router.get(
     ProductController.list
 )
 
+router.post(
+    '/products/upload/provider/satau',
+    ProductController.uploadSatauProducts
+)
+
 module.exports = router
