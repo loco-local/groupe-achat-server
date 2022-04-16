@@ -11,7 +11,7 @@
     "options": {
       "dialect": "sqlite",
       "host": "localhost",
-      "storage": "/home/chenzo/Projects/groupe-achat/groupe-achat-server/groupe-achat.sqlite",
+      "storage": "/home/chenzo/Projects/groupe-achat/groupe-achat.sqlite",
       "logging": true
     }
   },

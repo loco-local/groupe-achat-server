@@ -14,7 +14,7 @@ const SatauData = {
             name: data[SatauData._properyName(indexes.name)],
             category: data[SatauData._properyName(indexes.category)],
             maker: data[SatauData._properyName(indexes.maker)],
-            internalCode: data[SatauData._properyName(indexes.internalCode)],
+            internalCode: data[SatauData._properyName(indexes.internalCode)].trim(),
             qtyInBox: data[SatauData._properyName(indexes.qtyInBox)],
             format: data[SatauData._properyName(indexes.format)],
             price: data[SatauData._properyName(indexes.price)],

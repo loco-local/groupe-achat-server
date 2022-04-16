@@ -49,4 +49,9 @@ router.post(
     ProductController.uploadSatauProducts
 )
 
+router.post(
+    '/products/upload/:uploadId/accept',
+    ProductController.acceptUpload
+)
+
 module.exports = router

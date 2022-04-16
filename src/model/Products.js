@@ -4,7 +4,10 @@ module.exports = (sequelize, DataTypes) => {
         provider: DataTypes.STRING,
         maker: DataTypes.STRING,
         category: DataTypes.STRING,
-        internalCode: DataTypes.STRING,
+        internalCode: {
+            type: DataTypes.STRING,
+            unique: true
+        },
         qtyInBox: DataTypes.STRING,
         format: DataTypes.STRING,
         price: DataTypes.DOUBLE,
@@ -14,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
         nbInStock: DataTypes.DOUBLE,
         isAvailable: DataTypes.BOOLEAN,
         hasDecimalQuantity: DataTypes.BOOLEAN
+    }, {
+        indexes: [{
+            fields: ['internalCode']
+        }]
     })
     return Products;
 }
