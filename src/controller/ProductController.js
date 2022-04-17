@@ -4,8 +4,20 @@ const path = require("path");
 const uuid = require('uuid')
 const SatauData = require("../SatauData");
 const ProductController = {
-    list: async (req, res) => {
-        const products = await Products.findAll();
+    listPutForward: async (req, res) => {
+        const products = await Products.findAll({
+            where: {
+                isPutForward: true
+            }
+        });
+        res.send(products);
+    },
+    listDeprecated: async (req, res) => {
+        const products = await Products.findAll({
+            where: {
+                isPutForward: false
+            }
+        });
         res.send(products);
     },
     uploadSatauProducts: async (req, res) => {

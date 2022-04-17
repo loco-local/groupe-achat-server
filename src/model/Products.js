@@ -16,10 +16,15 @@ module.exports = (sequelize, DataTypes) => {
         image: DataTypes.JSONB,
         nbInStock: DataTypes.DOUBLE,
         isAvailable: DataTypes.BOOLEAN,
-        hasDecimalQuantity: DataTypes.BOOLEAN
+        hasDecimalQuantity: DataTypes.BOOLEAN,
+        isPutForward: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        },
     }, {
         indexes: [{
-            fields: ['internalCode']
+            fields: ['internalCode', 'isPutForward']
         }]
     })
     return Products;

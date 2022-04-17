@@ -40,8 +40,13 @@ router.post(
 )
 
 router.get(
-    '/products',
-    ProductController.list
+    '/products/forward',
+    ProductController.listPutForward
+)
+
+router.get(
+    '/products/deprecated',
+    ProductController.listDeprecated
 )
 
 router.post(
