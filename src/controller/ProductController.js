@@ -64,30 +64,41 @@ const ProductController = {
 
 // Get the data of "Sheet1"
             const data = xlsx.utils.sheet_to_json(workbook.Sheets[sheetNames[0]])
-            const formattedData = data.map(SatauData.formatEntry);
-            await Promise.all(formattedData.map(async (product) => {
-                    const productInDb = await Products.findOne({
-                        where: {
-                            internalCode: product.internalCode
-                        }
-                    })
-                    if (productInDb === null) {
-                        product.action = "create"
-                    } else if (productInDb.price !== product.price) {
-                        product.action = "updatePrice"
-                    } else {
-                        product.action = "nothing"
-                    }
-                })
-            );
+            let formattedData = SatauData.formatEntries(data);
+            let productsOfSatau = await Products.findAll({
+                raw: true,
+                where: {
+                    provider: "Satau"
+                }
+            });
+            productsOfSatau = productsOfSatau.reduce((products, product) => {
+                products[product.internalCode] = product;
+                return products;
+            }, {});
+            formattedData = Object.values(formattedData).map((product) => {
+                const productInDb = productsOfSatau[product.internalCode];
+                if (productInDb === undefined) {
+                    product.action = "create"
+                } else if (productInDb.price !== product.price) {
+                    product.action = "updatePrice"
+                } else {
+                    product.action = "nothing"
+                }
+                delete productsOfSatau[product.internalCode];
+                return product;
+            })
+            Object.values(productsOfSatau).forEach((productOfSatau) => {
+                productOfSatau.action = "remove";
+                formattedData[productOfSatau.internalCode] = productOfSatau;
+            });
             const uploadUuid = uuid.v4();
             await ProductsUpload.create({
                 uuid: uploadUuid,
                 rawData: data,
-                formattedData: formattedData
+                formattedData: Object.values(formattedData)
             })
             res.send({
-                formattedData: formattedData,
+                formattedData: Object.values(formattedData),
                 uploadUuid: uploadUuid
             })
         })
@@ -114,10 +125,40 @@ const ProductController = {
                             id: product.id
                         }
                     });
+                } else if (product.action === "remove") {
+                    await Products.update({
+                        isAvailable: false,
+                    }, {
+                        where: {
+                            id: product.id
+                        }
+                    });
                 }
             })
         );
         res.sendStatus(200)
+    },
+    makeAvailable: async (req, res) => {
+        const productId = parseInt(req.params['productId']);
+        await Products.update({
+            isAvailable: true,
+        }, {
+            where: {
+                id: productId
+            }
+        });
+        res.sendStatus(200);
+    },
+    makeUnavailable: async (req, res) => {
+        const productId = parseInt(req.params['productId']);
+        await Products.update({
+            isAvailable: false,
+        }, {
+            where: {
+                id: productId
+            }
+        });
+        res.sendStatus(200);
     }
 }
 module.exports = ProductController;

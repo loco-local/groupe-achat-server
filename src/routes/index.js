@@ -56,16 +56,31 @@ router.get(
 
 router.post(
     '/products/deprecated',
+    isAdmin,
     ProductController.deprecate
 )
 
 router.post(
+    '/products/:productId/available',
+    isAdmin,
+    ProductController.makeAvailable
+)
+
+router.post(
+    '/products/:productId/unavailable',
+    isAdmin,
+    ProductController.makeUnavailable
+)
+
+router.post(
     '/products/upload/provider/satau',
+    isAdmin,
     ProductController.uploadSatauProducts
 )
 
 router.post(
     '/products/upload/:uploadId/accept',
+    isAdmin,
     ProductController.acceptUpload
 )
 

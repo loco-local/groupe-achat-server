@@ -8,6 +8,13 @@ const indexes = {
     price: 8
 }
 const SatauData = {
+    formatEntries: function (entries) {
+        return entries.reduce((formattedEntries, entry) => {
+            const formatted = SatauData.formatEntry(entry);
+            formattedEntries[formatted.internalCode] = formatted;
+            return formattedEntries;
+        }, {});
+    },
     formatEntry: function (data) {
         return {
             provider: "Satau",

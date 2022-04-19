@@ -5,7 +5,9 @@
     "price": 2.50,
     "hasDecimalQuantity": true,
     "isPriceInKg": true,
-    "isTaxable": true
+    "isTaxable": true,
+    "internalCode" : "papu",
+    "provider": "Satau"
   },
   {
     "name": "Moutarde de dijon",
@@ -13,6 +15,8 @@
     "price": 3.21,
     "hasDecimalQuantity": true,
     "isPriceInKg": true,
-    "isTaxable": true
+    "isTaxable": true,
+    "internalCode" : "poupou",
+    "provider": "Satau"
   }
 ]
