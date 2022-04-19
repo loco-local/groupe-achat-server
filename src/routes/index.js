@@ -44,9 +44,19 @@ router.get(
     ProductController.listPutForward
 )
 
+router.post(
+    '/products/forward',
+    ProductController.putForward
+)
+
 router.get(
     '/products/deprecated',
     ProductController.listDeprecated
+)
+
+router.post(
+    '/products/deprecated',
+    ProductController.deprecate
 )
 
 router.post(

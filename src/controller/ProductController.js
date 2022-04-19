@@ -20,6 +20,32 @@ const ProductController = {
         });
         res.send(products);
     },
+    putForward: async (req, res) => {
+        const products = req.body;
+        await Promise.all(products.map(async (product) => {
+            await Products.update({
+                isPutForward: true,
+            }, {
+                where: {
+                    id: product.id
+                }
+            });
+        }));
+        res.sendStatus(200);
+    },
+    deprecate: async (req, res) => {
+        const products = req.body;
+        await Promise.all(products.map(async (product) => {
+            await Products.update({
+                isPutForward: false,
+            }, {
+                where: {
+                    id: product.id
+                }
+            });
+        }));
+        res.sendStatus(200);
+    },
     uploadSatauProducts: async (req, res) => {
         let uploadedFile = req.files.file;
         const fileInfo = {
@@ -83,6 +109,7 @@ const ProductController = {
                 } else if (product.action === "updatePrice") {
                     await Products.update({
                         price: product.price,
+                    }, {
                         where: {
                             id: product.id
                         }
