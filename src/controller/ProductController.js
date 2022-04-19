@@ -88,8 +88,10 @@ const ProductController = {
                 return product;
             })
             Object.values(productsOfSatau).forEach((productOfSatau) => {
-                productOfSatau.action = "remove";
-                formattedData[productOfSatau.internalCode] = productOfSatau;
+                if (productOfSatau.isAvailable) {
+                    productOfSatau.action = "remove";
+                    formattedData[productOfSatau.internalCode] = productOfSatau;
+                }
             });
             const uploadUuid = uuid.v4();
             await ProductsUpload.create({

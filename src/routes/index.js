@@ -55,7 +55,7 @@ router.get(
 )
 
 router.post(
-    '/products/deprecated',
+    '/products/deprecate',
     isAdmin,
     ProductController.deprecate
 )
