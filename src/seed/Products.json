@@ -7,7 +7,8 @@
     "isPriceInKg": true,
     "isTaxable": true,
     "internalCode" : "papu",
-    "provider": "Satau"
+    "provider": "Satau",
+    "isAvailable": true
   },
   {
     "name": "Moutarde de dijon",
@@ -17,6 +18,7 @@
     "isPriceInKg": true,
     "isTaxable": true,
     "internalCode" : "poupou",
-    "provider": "Satau"
+    "provider": "Satau",
+    "isAvailable": true
   }
 ]

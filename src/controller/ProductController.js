@@ -161,6 +161,48 @@ const ProductController = {
             }
         });
         res.sendStatus(200);
+    },
+    async createProduct(req, res) {
+        let product = req.body
+        product = await Products.create({
+            name: product.name,
+            format: product.format,
+            price: product.price,
+            internalCode: product.internalCode,
+            maker: product.maker,
+            provider: product.provider,
+            isAvailable: true,
+            isTaxable: product.isTaxable,
+            isPutForward: true,
+        })
+        res.send({
+            id: product.id
+        })
+    },
+    async updateProduct(req, res) {
+        let product = req.body
+        if (product.id !== parseInt(req.params['productId'])) {
+            return res.sendStatus(401)
+        }
+        if (!product.nbInStock || product.nbInStock === '') {
+            product.nbInStock = 0
+        }
+        await Products.update({
+            name: product.name,
+            format: product.format,
+            price: product.price,
+            internalCode: product.internalCode,
+            maker: product.maker,
+            provider: product.provider,
+            isAvailable: true,
+            isTaxable: product.isTaxable,
+            isPutForward: true,
+        }, {
+            where: {
+                id: product.id
+            }
+        });
+        res.sendStatus(200);
     }
 }
 module.exports = ProductController;

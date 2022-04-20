@@ -39,6 +39,18 @@ router.post(
     AuthenticationController.changePassword
 )
 
+router.post(
+    '/products',
+    isAdmin,
+    ProductController.createProduct
+)
+
+router.put(
+    '/products/:productId',
+    isAdmin,
+    ProductController.updateProduct
+)
+
 router.get(
     '/products/forward',
     ProductController.listPutForward
