@@ -12,7 +12,7 @@ const isAuthenticated = require('../policy/isAuthenticated')
 // const isOwnerArdoiseUserOrAdmin = require('../policy/isOwnerArdoiseUserOrAdmin')
 const isAdmin = require('../policy/isAdmin')
 const ProductController = require("../controller/ProductController");
-
+const BuyGroupController = require("../controller/BuyGroupController");
 // router.post(
 //   '/api/register',
 //   AuthenticationControllerPolicy.register,
@@ -52,18 +52,23 @@ router.put(
 )
 
 router.get(
-    '/products/forward',
+    '/buy-group/path/:buyGroupPath',
+    BuyGroupController.getForPath
+)
+
+router.get(
+    '/buy-group/:buyGroupId/products/forward',
     ProductController.listPutForward
+)
+
+router.get(
+    '/buy-group/:buyGroupId/products/deprecated',
+    ProductController.listDeprecated
 )
 
 router.post(
     '/products/forward',
     ProductController.putForward
-)
-
-router.get(
-    '/products/deprecated',
-    ProductController.listDeprecated
 )
 
 router.post(

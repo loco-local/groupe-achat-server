@@ -9,7 +9,8 @@
     "latestTransaction": "2018-07-13 18:40:04.112-05",
     "uuid": "f75d5e72-7a3d-44c9-970f-b9d5eabade6c",
     "phone1": "555-222-1123",
-    "address": "164 222 de la grand route"
+    "address": "164 222 de la grand route",
+    "BuyGroupId": 1
   },
   {
     "email": "u@gr.org",
@@ -20,6 +21,7 @@
     "locale": "fr",
     "uuid": "1dcad149-3329-49a1-b417-48db85415ec5",
     "phone1": "555-11-1323",
-    "address": "164 222 de la grand route"
+    "address": "164 222 de la grand route",
+    "BuyGroupId": 1
   }
 ]

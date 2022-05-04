@@ -54,5 +54,9 @@ module.exports = (sequelize, DataTypes) => {
     User.getFewAttributes = function () {
         return ["uuid", "locale", "firstname", "lastname", "status"]
     };
+
+    User.defineAssociationsUsingModels = function (model, models) {
+        model.belongsTo(models.BuyGroups);
+    };
     return User
 }

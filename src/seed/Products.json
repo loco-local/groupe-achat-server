@@ -8,7 +8,8 @@
     "isTaxable": true,
     "internalCode" : "papu",
     "provider": "Satau",
-    "isAvailable": true
+    "isAvailable": true,
+    "BuyGroupId": 1
   },
   {
     "name": "Moutarde de dijon",
@@ -19,6 +20,7 @@
     "isTaxable": true,
     "internalCode" : "poupou",
     "provider": "Satau",
-    "isAvailable": true
+    "isAvailable": true,
+    "BuyGroupId": 1
   }
 ]

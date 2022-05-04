@@ -24,8 +24,11 @@ module.exports = (sequelize, DataTypes) => {
         },
     }, {
         indexes: [{
-            fields: ['internalCode', 'isPutForward']
+            fields: ['internalCode', 'isPutForward', 'BuyGroupId']
         }]
     })
+    Products.defineAssociationsUsingModels = function (model, models) {
+        model.belongsTo(models.BuyGroups);
+    };
     return Products;
 }

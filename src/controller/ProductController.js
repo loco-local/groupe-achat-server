@@ -5,17 +5,21 @@ const uuid = require('uuid')
 const SatauData = require("../SatauData");
 const ProductController = {
     listPutForward: async (req, res) => {
+        const buyGroupId = parseInt(req.params['buyGroupId']);
         const products = await Products.findAll({
             where: {
-                isPutForward: true
+                isPutForward: true,
+                BuyGroupId: buyGroupId
             }
         });
         res.send(products);
     },
     listDeprecated: async (req, res) => {
+        const buyGroupId = parseInt(req.params['buyGroupId']);
         const products = await Products.findAll({
             where: {
-                isPutForward: false
+                isPutForward: false,
+                BuyGroupId: buyGroupId
             }
         });
         res.send(products);
@@ -115,9 +119,11 @@ const ProductController = {
         if (productsUpload === null) {
             return res.sendStatus(400);
         }
+        const buyGroupId = parseInt(req.user.BuyGroupId);
         await Promise.all(
             productsUpload.formattedData.map(async (product) => {
                 if (product.action === "create") {
+                    product.BuyGroupId = buyGroupId;
                     await Products.create(product);
                 } else if (product.action === "updatePrice") {
                     await Products.update({
