@@ -13,6 +13,7 @@ const isAuthenticated = require('../policy/isAuthenticated')
 const isAdmin = require('../policy/isAdmin')
 const ProductController = require("../controller/ProductController");
 const BuyGroupController = require("../controller/BuyGroupController");
+const BuyGroupOrderController = require("../controller/BuyGroupOrderController");
 // router.post(
 //   '/api/register',
 //   AuthenticationControllerPolicy.register,
@@ -99,6 +100,24 @@ router.post(
     '/products/upload/:uploadId/accept',
     isAdmin,
     ProductController.acceptUpload
+)
+
+router.get(
+    '/buy-group-orders/:buyGroupId',
+    isAdmin,
+    BuyGroupOrderController.list
+)
+
+router.post(
+    '/buy-group-orders',
+    isAdmin,
+    BuyGroupOrderController.create
+)
+
+router.put(
+    '/buy-group-orders/:orderId',
+    isAdmin,
+    BuyGroupOrderController.update
 )
 
 module.exports = router
