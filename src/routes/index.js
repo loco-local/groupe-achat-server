@@ -108,6 +108,13 @@ router.get(
     BuyGroupOrderController.list
 )
 
+router.get(
+    '/buy-group-orders/:buyGroupId/unfinished',
+    isAuthenticated,
+    BuyGroupOrderController.listUnfinished
+)
+
+
 router.post(
     '/buy-group-orders',
     isAdmin,

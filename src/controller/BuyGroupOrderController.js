@@ -1,4 +1,5 @@
 const {BuyGroupOrders} = require('../model')
+const {Op} = require("sequelize");
 
 const BuyGroupOrderController = {
     list: async (req, res) => {
@@ -17,9 +18,28 @@ const BuyGroupOrderController = {
         })
         res.send(orders);
     },
+    listUnfinished: async (req, res) => {
+        const buyGroupId = parseInt(req.params['buyGroupId']);
+        if (isNaN(buyGroupId)) {
+            return res.sendStatus(401)
+        }
+        const userBuyGroupId = parseInt(req.user.BuyGroupId);
+        if (userBuyGroupId !== buyGroupId) {
+            return res.sendStatus(403);
+        }
+        const orders = await BuyGroupOrders.findAll({
+            where: {
+                endDate: {
+                    [Op.gte]: new Date()
+                }
+            }
+        })
+        res.send(orders);
+    },
     create: async (req, res) => {
         const userBuyGroupId = parseInt(req.user.BuyGroupId);
         let order = req.body
+
         order = await BuyGroupOrders.create({
             startDate: order.startDate,
             endDate: order.endDate,
@@ -48,7 +68,7 @@ const BuyGroupOrderController = {
             }
         });
         res.sendStatus(200);
-    }
+    },
 }
 
 module.exports = BuyGroupOrderController;
