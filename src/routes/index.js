@@ -14,6 +14,8 @@ const isAdmin = require('../policy/isAdmin')
 const ProductController = require("../controller/ProductController");
 const BuyGroupController = require("../controller/BuyGroupController");
 const BuyGroupOrderController = require("../controller/BuyGroupOrderController");
+const UserOrderController = require("../controller/UserOrderController");
+const UserOrderItemsController = require("../controller/UserOrderItemsController");
 // router.post(
 //   '/api/register',
 //   AuthenticationControllerPolicy.register,
@@ -114,7 +116,6 @@ router.get(
     BuyGroupOrderController.listUnfinished
 )
 
-
 router.post(
     '/buy-group-orders',
     isAdmin,
@@ -125,6 +126,30 @@ router.put(
     '/buy-group-orders/:orderId',
     isAdmin,
     BuyGroupOrderController.update
+)
+
+router.get(
+    '/buy-group/:buyGroupId/buy-group-order/:buyGroupOrderId/userOrder/:userId',
+    isAuthenticated,
+    UserOrderController.getForGroupOrder
+)
+
+router.post(
+    '/buy-group/:buyGroupId/buy-group-order/:buyGroupOrderId/userOrder/:userId',
+    isAuthenticated,
+    UserOrderController.createForGroupOrder
+)
+
+router.get(
+    '/userOrder/:userOrderId/items',
+    isAuthenticated,
+    UserOrderItemsController.listForOrder
+)
+
+router.post(
+    '/userOrder/:userOrderId/product/:productId/quantity',
+    isAuthenticated,
+    UserOrderItemsController.setQuantity
 )
 
 module.exports = router
