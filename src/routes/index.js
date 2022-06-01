@@ -105,27 +105,33 @@ router.post(
 )
 
 router.get(
-    '/buy-group-orders/:buyGroupId',
+    '/buy-group/:buyGroupId/orders',
     isAdmin,
     BuyGroupOrderController.list
 )
 
 router.get(
-    '/buy-group-orders/:buyGroupId/unfinished',
+    '/buy-group/:buyGroupId/orders/unfinished',
     isAuthenticated,
     BuyGroupOrderController.listUnfinished
 )
 
 router.post(
-    '/buy-group-orders',
+    '/buy-group/:buyGroupId/orders',
     isAdmin,
     BuyGroupOrderController.create
 )
 
 router.put(
-    '/buy-group-orders/:orderId',
+    '/buy-group/:buyGroupId/orders',
     isAdmin,
     BuyGroupOrderController.update
+)
+
+router.get(
+    '/buy-group/:buyGroupId/orders/:orderId/userOrders',
+    isAdmin,
+    BuyGroupOrderController.listUserOrders
 )
 
 router.get(

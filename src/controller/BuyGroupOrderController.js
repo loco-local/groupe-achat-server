@@ -1,4 +1,4 @@
-const {BuyGroupOrders} = require('../model')
+const {BuyGroupOrders, UserOrders, Users} = require('../model')
 const {Op} = require("sequelize");
 
 const BuyGroupOrderController = {
@@ -33,6 +33,31 @@ const BuyGroupOrderController = {
                     [Op.gte]: new Date()
                 }
             }
+        })
+        res.send(orders);
+    },
+    listUserOrders: async (req, res) => {
+        const buyGroupOrderId = parseInt(req.params['orderId']);
+        if (isNaN(buyGroupOrderId)) {
+            return res.sendStatus(401)
+        }
+        const buyGroupOrder = await BuyGroupOrders.findOne({
+            where: {
+                id: buyGroupOrderId
+            }
+        })
+
+        const userBuyGroupId = parseInt(req.user.BuyGroupId);
+        if (userBuyGroupId !== buyGroupOrder.BuyGroupId) {
+            return res.sendStatus(403);
+        }
+        const orders = await UserOrders.findAll({
+            where: {
+                BuyGroupOrderId: userBuyGroupId
+            },
+            include: [
+                {model: Users, attributes:['id', 'firstname', 'lastname']},
+            ],
         })
         res.send(orders);
     },
