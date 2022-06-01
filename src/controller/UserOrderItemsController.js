@@ -1,4 +1,5 @@
 const {UserOrders, UserOrderItems, Products} = require('../model')
+const UserOrder = require("../UserOrder");
 const UserOrderItemsController = {
     listForOrder: async (req, res) => {
         const order = await UserOrderItemsController._getOrderFromRequest(req);
@@ -27,15 +28,15 @@ const UserOrderItemsController = {
                 ProductId: productId
             }
         });
+        const product = await Products.findOne({
+            where: {
+                id: productId
+            }
+        })
+        const tps = UserOrderItemsController.calculateTPS(product, quantity);
+        const tvq = UserOrderItemsController.calculateTVQ(product, quantity);
+        const totalPrice = parseFloat((product.price * quantity) + tps + tvq).toFixed(2);
         if (userOrderItem === null) {
-            const product = await Products.findOne({
-                where: {
-                    id: productId
-                }
-            })
-            const tps = UserOrderItemsController.calculateTPS(product, quantity);
-            const tvq = UserOrderItemsController.calculateTVQ(product, quantity);
-            const totalPrice = parseFloat((product.price * quantity) + tps + tvq).toFixed(2);
             await UserOrderItems.create({
                 ProductId: productId,
                 UserOrderId: order.id,
@@ -53,8 +54,12 @@ const UserOrderItemsController = {
                 return res.sendStatus(401);
             }
             userOrderItem.quantity = quantity;
+            userOrderItem.tps = tps;
+            userOrderItem.tvq = tvq;
+            userOrderItem.totalPrice = userOrderItem.totalPriceAfterRebate = totalPrice
             await userOrderItem.save();
         }
+        await UserOrder.buildTotal(order);
         res.sendStatus(200);
     },
     calculateTPS(product, quantity) {
