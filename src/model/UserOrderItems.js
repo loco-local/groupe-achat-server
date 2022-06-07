@@ -7,6 +7,12 @@ module.exports = (sequelize, DataTypes) => {
         info: DataTypes.JSON,
         tvq: DataTypes.DOUBLE,
         tps: DataTypes.DOUBLE,
+        internalCode: DataTypes.STRING,
+        provider: DataTypes.STRING,
+        maker: DataTypes.STRING,
+        category: DataTypes.STRING,
+        qtyInBox: DataTypes.STRING,
+        format: DataTypes.STRING,
         totalPriceAfterRebate: DataTypes.DOUBLE,
         rebates: DataTypes.JSON
     }, {

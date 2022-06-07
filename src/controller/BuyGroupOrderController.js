@@ -1,4 +1,4 @@
-const {BuyGroupOrders, UserOrders, Users} = require('../model')
+const {BuyGroupOrders, UserOrders, UserOrderItems, Users} = require('../model')
 const {Op} = require("sequelize");
 
 const BuyGroupOrderController = {
@@ -51,15 +51,44 @@ const BuyGroupOrderController = {
         if (userBuyGroupId !== buyGroupOrder.BuyGroupId) {
             return res.sendStatus(403);
         }
-        const orders = await UserOrders.findAll({
+        return await UserOrders.findAll({
             where: {
                 BuyGroupOrderId: userBuyGroupId
             },
             include: [
-                {model: Users, attributes:['id', 'firstname', 'lastname']},
+                {model: Users, attributes: ['id', 'firstname', 'lastname']},
             ],
+        });
+    },
+    listUserOrdersItems: async (req, res) => {
+        const buyGroupOrderId = parseInt(req.params['orderId']);
+        if (isNaN(buyGroupOrderId)) {
+            return res.sendStatus(401)
+        }
+        const buyGroupOrder = await BuyGroupOrders.findOne({
+            where: {
+                id: buyGroupOrderId
+            }
         })
-        res.send(orders);
+
+        const userBuyGroupId = parseInt(req.user.BuyGroupId);
+        if (userBuyGroupId !== buyGroupOrder.BuyGroupId) {
+            return res.sendStatus(403);
+        }
+        const userOrderItems = await UserOrderItems.findAll({
+            include: [
+                {
+                    model: UserOrders,
+                    where: {
+                        BuyGroupOrderId: buyGroupOrderId
+                    },
+                    include: [
+                        {model: Users, attributes: ['id', 'firstname', 'lastname']},
+                    ]
+                }
+            ]
+        })
+        res.send(userOrderItems);
     },
     create: async (req, res) => {
         const userBuyGroupId = parseInt(req.user.BuyGroupId);

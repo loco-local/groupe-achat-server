@@ -135,6 +135,12 @@ router.get(
 )
 
 router.get(
+    '/buy-group/:buyGroupId/orders/:orderId/userOrders/items',
+    isAdmin,
+    BuyGroupOrderController.listUserOrdersItems
+)
+
+router.get(
     '/buy-group/:buyGroupId/buy-group-order/:buyGroupOrderId/userOrder/:userId',
     isAuthenticated,
     UserOrderController.getForGroupOrder
