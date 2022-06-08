@@ -51,7 +51,7 @@ const BuyGroupOrderController = {
         if (userBuyGroupId !== buyGroupOrder.BuyGroupId) {
             return res.sendStatus(403);
         }
-        return await UserOrders.findAll({
+        const userOrders = await UserOrders.findAll({
             where: {
                 BuyGroupOrderId: userBuyGroupId
             },
@@ -59,6 +59,7 @@ const BuyGroupOrderController = {
                 {model: Users, attributes: ['id', 'firstname', 'lastname']},
             ],
         });
+        res.send(userOrders);
     },
     listUserOrdersItems: async (req, res) => {
         const buyGroupOrderId = parseInt(req.params['orderId']);

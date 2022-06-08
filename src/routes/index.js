@@ -60,6 +60,11 @@ router.get(
 )
 
 router.get(
+    '/buy-group/:buyGroupId',
+    BuyGroupController.getForId
+)
+
+router.get(
     '/buy-group/:buyGroupId/products/forward',
     ProductController.listPutForward
 )
