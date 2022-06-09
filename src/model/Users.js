@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
         return bcrypt.compareAsync(password, this.password)
     }
     User.getSafeAttributes = function () {
-        return ["email", "id", "uuid", "locale", "firstname", "lastname", "status", "region", "subRegion", "subRegion", "phone1", "phone2", "address", "createdAt", "facebookId", "OrganisationId", "contactByEmail", "contactByMessenger", "contactByPhone", "pronoun", "preferredCommunication", "language", "orgIdGotBonusForSubscription"]
+        return ["email", "id", "uuid", "locale", "firstname", "lastname", "status", "phone1", "phone2", "address", "createdAt","pronoun"]
     };
     User.getFewAttributes = function () {
         return ["uuid", "locale", "firstname", "lastname", "status"]

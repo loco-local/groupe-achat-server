@@ -1,4 +1,4 @@
-const {UserOrders, BuyGroupOrders} = require('../model')
+const {UserOrders, BuyGroupOrders, UserOrderItems, Users} = require('../model')
 
 const UserOrderController = {
     getForGroupOrder: async (req, res) => {
@@ -17,6 +17,40 @@ const UserOrderController = {
             return res.sendStatus(204);
         }
         res.send(userOrder);
+    },
+    getDetailsForGroupOrder: async (req, res) => {
+        const buyGroupOrderId = parseInt(req.params['buyGroupId']);
+        if (isNaN(buyGroupOrderId)) {
+            return res.sendStatus(401)
+        }
+        const buyGroupOrder = await BuyGroupOrders.findOne({
+            where: {
+                id: buyGroupOrderId
+            }
+        })
+        const userBuyGroupId = parseInt(req.user.BuyGroupId);
+        if (userBuyGroupId !== buyGroupOrder.BuyGroupId) {
+            return res.sendStatus(403);
+        }
+        const userId = parseInt(req.params['userId']);
+        if (userId !== req.user.id && req.user.status !== "admin") {
+            return res.sendStatus(403);
+        }
+        const userOrderItems = await UserOrderItems.findAll({
+            include: [
+                {
+                    model: UserOrders,
+                    where: {
+                        BuyGroupOrderId: buyGroupOrderId,
+                        UserId: userId
+                    },
+                    include: [
+                        {model: Users, attributes: ['id', 'firstname', 'lastname']},
+                    ]
+                }
+            ]
+        })
+        res.send(userOrderItems);
     },
     createForGroupOrder: async (req, res) => {
         const buyGroupOrder = await UserOrderController._getBuyGroupOrderFromRequest(req);

@@ -16,6 +16,7 @@ const BuyGroupController = require("../controller/BuyGroupController");
 const BuyGroupOrderController = require("../controller/BuyGroupOrderController");
 const UserOrderController = require("../controller/UserOrderController");
 const UserOrderItemsController = require("../controller/UserOrderItemsController");
+const MemberController = require("../controller/MemberController");
 // router.post(
 //   '/api/register',
 //   AuthenticationControllerPolicy.register,
@@ -40,6 +41,12 @@ router.post(
 router.post(
     '/change-password',
     AuthenticationController.changePassword
+)
+
+router.get(
+    '/members/:memberId',
+    isAuthenticated,
+    MemberController.get
 )
 
 router.post(
@@ -149,6 +156,12 @@ router.get(
     '/buy-group/:buyGroupId/buy-group-order/:buyGroupOrderId/userOrder/:userId',
     isAuthenticated,
     UserOrderController.getForGroupOrder
+)
+
+router.get(
+    '/buy-group/:buyGroupId/orders/:buyGroupOrderId/user/:userId/order-items',
+    isAuthenticated,
+    UserOrderController.getDetailsForGroupOrder
 )
 
 router.post(
