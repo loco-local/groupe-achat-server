@@ -2,6 +2,8 @@
   {
     "BuyGroupId" : "1",
     "startDate" : "0",
-    "endDate" : "21"
+    "endDate" : "21",
+    "salePercentage": "9",
+    "additionalFees": "Frais de transports répartis également sur les commandes"
   }
 ]

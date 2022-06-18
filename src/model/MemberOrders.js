@@ -1,9 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
     const MemberOrders = sequelize.define('MemberOrders', {
         costPriceTotal: DataTypes.DOUBLE,
-        costPriceTotalUponReceipt: DataTypes.DOUBLE,
-        priceTotal: DataTypes.DOUBLE,
-        priceTotalUponReceipt: DataTypes.DOUBLE,
+        expectedTotal: DataTypes.DOUBLE,
+        total: DataTypes.DOUBLE,
         paymentMethod: DataTypes.STRING
     }, {
         paranoid: true

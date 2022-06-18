@@ -2,7 +2,8 @@
   {
     "name": "Loco Local",
     "path": "loco-local",
-    "salePercentage" : "9"
+    "salePercentage" : "9",
+    "additionalFees": "Frais de transports répartis également sur les commandes"
   },
   {
     "name": "Collectif Alimentaire",

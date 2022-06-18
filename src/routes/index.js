@@ -183,9 +183,9 @@ router.get(
 )
 
 router.post(
-    '/memberOrder/:memberOrderId/product/:productId/quantity',
+    '/memberOrder/:memberOrderId/product/:productId/quantity/expected',
     isAuthenticated,
-    MemberOrderItemsController.setQuantity
+    MemberOrderItemsController.setExpectedQuantity
 )
 
 module.exports = router
