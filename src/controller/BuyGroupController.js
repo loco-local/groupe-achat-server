@@ -19,6 +19,31 @@ const BuyGroupController = {
             }
         });
         res.send(buyGroup);
+    },
+    update: async (req, res) => {
+        let buyGroupId = req.params['buyGroupId'];
+        if (isNaN(buyGroupId)) {
+            return res.sendStatus(401)
+        }
+        buyGroupId = parseInt(buyGroupId);
+        const memberBuyGroupId = parseInt(req.user.BuyGroupId);
+        if (memberBuyGroupId !== buyGroupId) {
+            return res.sendStatus(403);
+        }
+        let buyGroup = req.body;
+        if (buyGroup.id !== buyGroupId) {
+            return res.sendStatus(401)
+        }
+        await BuyGroups.update({
+            name: buyGroup.name,
+            path: buyGroup.path,
+            salePercentage: buyGroup.salePercentage
+        }, {
+            where: {
+                id: buyGroup.id
+            }
+        });
+        res.sendStatus(200);
     }
 }
 

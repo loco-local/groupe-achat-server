@@ -83,7 +83,7 @@ const ProductController = {
                 const productInDb = productsOfSatau[product.internalCode];
                 if (productInDb === undefined) {
                     product.action = "create"
-                } else if (productInDb.price !== product.price) {
+                } else if (productInDb.costPrice !== product.costPrice) {
                     product.action = "updatePrice"
                 } else {
                     product.action = "nothing"
@@ -127,7 +127,7 @@ const ProductController = {
                     await Products.create(product);
                 } else if (product.action === "updatePrice") {
                     await Products.update({
-                        price: product.price,
+                        costPrice: product.costPrice,
                     }, {
                         where: {
                             id: product.id
@@ -173,12 +173,13 @@ const ProductController = {
         product = await Products.create({
             name: product.name,
             format: product.format,
-            price: product.price,
+            costPrice: product.costPrice,
             internalCode: product.internalCode,
             maker: product.maker,
             provider: product.provider,
             isAvailable: true,
-            isTaxable: product.isTaxable,
+            hasTPS: product.hasTPS,
+            hasTVQ: product.hasTVQ,
             isPutForward: true,
         })
         res.send({
@@ -196,12 +197,13 @@ const ProductController = {
         await Products.update({
             name: product.name,
             format: product.format,
-            price: product.price,
+            costPrice: product.costPrice,
             internalCode: product.internalCode,
             maker: product.maker,
             provider: product.provider,
             isAvailable: true,
-            isTaxable: product.isTaxable,
+            hasTPS: product.hasTPS,
+            hasTVQ: product.hasTVQ,
             isPutForward: true,
         }, {
             where: {

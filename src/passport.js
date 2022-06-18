@@ -1,4 +1,4 @@
-const {Users} = require('./model')
+const {Members} = require('./model')
 const config = require('./config')
 const passport = require('passport')
 const JwtStrategy = require('passport-jwt').Strategy
@@ -11,7 +11,7 @@ passport.use(
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         secretOrKey: config.get().authentication.jwtSecret
     }, function (jwtPayload, done) {
-        return Users.findOne({
+        return Members.findOne({
             where: {
                 id: jwtPayload.id,
                 status: {

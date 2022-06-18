@@ -15,7 +15,7 @@ function hashPassword(user, options) {
 }
 
 module.exports = (sequelize, DataTypes) => {
-    const User = sequelize.define('Users', {
+    const Member = sequelize.define('Members', {
         firstname: DataTypes.STRING,
         lastname: DataTypes.STRING,
         uuid: {
@@ -45,18 +45,18 @@ module.exports = (sequelize, DataTypes) => {
             fields: ['uuid', 'resetPasswordToken', 'email']
         }]
     })
-    User.prototype.comparePassword = function (password) {
+    Member.prototype.comparePassword = function (password) {
         return bcrypt.compareAsync(password, this.password)
     }
-    User.getSafeAttributes = function () {
+    Member.getSafeAttributes = function () {
         return ["email", "id", "uuid", "locale", "firstname", "lastname", "status", "phone1", "phone2", "address", "createdAt","pronoun"]
     };
-    User.getFewAttributes = function () {
+    Member.getFewAttributes = function () {
         return ["uuid", "locale", "firstname", "lastname", "status"]
     };
 
-    User.defineAssociationsUsingModels = function (model, models) {
+    Member.defineAssociationsUsingModels = function (model, models) {
         model.belongsTo(models.BuyGroups);
     };
-    return User
+    return Member
 }

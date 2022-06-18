@@ -1,5 +1,5 @@
 const passport = require('passport')
-const {Users} = require('../model')
+const {Members} = require('../model')
 module.exports = function (req, res, next) {
     passport.authenticate('jwt', async function (err, user) {
         if (err || !user) {
@@ -7,7 +7,7 @@ module.exports = function (req, res, next) {
                 error: 'you do not have access to this resource'
             })
         }
-        const userForStatus = await Users.findOne({
+        const userForStatus = await Members.findOne({
             attributes: ['status'],
             where: {
                 uuid: user.uuid

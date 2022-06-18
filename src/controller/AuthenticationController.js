@@ -1,4 +1,4 @@
-const {Users} = require('../model')
+const {Members} = require('../model')
 const jwt = require('jsonwebtoken')
 const config = require('../config')
 const crypto = require('crypto')
@@ -35,28 +35,28 @@ const AuthenticationController = {
             if (password === undefined || password === null || password.trim() === '') {
                 return res.status(403)
             }
-            let user = await Users.findOne({
+            let member = await Members.findOne({
                 where: {
                     email: email.trim()
                 }
             });
-            if (user === undefined || user === null) {
+            if (member === undefined || member === null) {
                 return res.send(403, {
                     error: 'Login information is incorrect'
                 })
             }
-            if (user.status === "disabled") {
+            if (member.status === "disabled") {
                 return res.send(403, {
                     error: 'disabled'
                 });
             }
-            const isPasswordValid = await user.comparePassword(password);
+            const isPasswordValid = await member.comparePassword(password);
             if (!isPasswordValid) {
                 return res.send(403, {
                     error: 'Login information is incorrect'
                 })
             }
-            AuthenticationController._loginUser(res, user);
+            AuthenticationController._loginUser(res, member);
         },
         _loginUser: function (res, user) {
             res.send({
@@ -102,7 +102,7 @@ const AuthenticationController = {
         ,
         _resetPassword: async function (email) {
             const token = crypto.randomBytes(32).toString('hex')
-            const user = await Users.findOne({
+            const user = await Members.findOne({
                 where: {
                     email: email
                 }
@@ -117,7 +117,7 @@ const AuthenticationController = {
         }
         ,
         isTokenValid: function (req, res) {
-            Users.findOne({
+            Members.findOne({
                 where: {
                     resetPasswordToken: req.body.token,
                     resetPasswordExpires: {$gt: Date.now()}
@@ -141,7 +141,7 @@ const AuthenticationController = {
                     403
                 )
             }
-            Users.findOne({
+            Members.findOne({
                 where: {
                     resetPasswordToken: token,
                     resetPasswordExpires: {$gt: Date.now()}
@@ -175,7 +175,7 @@ const AuthenticationController = {
                     403
                 )
             }
-            Users.findOne({
+            Members.findOne({
                 where: {
                     email: email
                 },

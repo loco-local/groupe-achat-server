@@ -1,22 +1,22 @@
-const {UserOrders, BuyGroupOrders, UserOrderItems, Users} = require('../model')
+const {MemberOrders, BuyGroupOrders, MemberOrderItems, Members} = require('../model')
 
-const UserOrderController = {
+const MemberOrderController = {
     getForGroupOrder: async (req, res) => {
-        const buyGroupOrder = await UserOrderController._getBuyGroupOrderFromRequest(req);
+        const buyGroupOrder = await MemberOrderController._getBuyGroupOrderFromRequest(req);
         if (buyGroupOrder === false || buyGroupOrder === null) {
             return res.sendStatus(401);
         }
-        const userId = parseInt(req.user.id);
-        const userOrder = await UserOrders.findOne({
+        const memberId = parseInt(req.user.id);
+        const memberOrder = await MemberOrders.findOne({
             where: {
-                UserId: userId,
+                MemberId: memberId,
                 BuyGroupOrderId: buyGroupOrder.id
             }
         });
-        if (userOrder === null) {
+        if (memberOrder === null) {
             return res.sendStatus(204);
         }
-        res.send(userOrder);
+        res.send(memberOrder);
     },
     getDetailsForGroupOrder: async (req, res) => {
         const buyGroupOrderId = parseInt(req.params['buyGroupId']);
@@ -28,56 +28,56 @@ const UserOrderController = {
                 id: buyGroupOrderId
             }
         })
-        const userBuyGroupId = parseInt(req.user.BuyGroupId);
-        if (userBuyGroupId !== buyGroupOrder.BuyGroupId) {
+        const memberBuyGroupId = parseInt(req.user.BuyGroupId);
+        if (memberBuyGroupId !== buyGroupOrder.BuyGroupId) {
             return res.sendStatus(403);
         }
-        const userId = parseInt(req.params['userId']);
-        if (userId !== req.user.id && req.user.status !== "admin") {
+        const memberId = parseInt(req.params['memberId']);
+        if (memberId !== req.user.id && req.user.status !== "admin") {
             return res.sendStatus(403);
         }
-        const userOrderItems = await UserOrderItems.findAll({
+        const MemberOrderItems = await MemberOrderItems.findAll({
             include: [
                 {
-                    model: UserOrders,
+                    model: MemberOrders,
                     where: {
                         BuyGroupOrderId: buyGroupOrderId,
-                        UserId: userId
+                        MemberId: memberId
                     },
                     include: [
-                        {model: Users, attributes: ['id', 'firstname', 'lastname']},
+                        {model: Members, attributes: ['id', 'firstname', 'lastname']},
                     ]
                 }
             ]
         })
-        res.send(userOrderItems);
+        res.send(MemberOrderItems);
     },
     createForGroupOrder: async (req, res) => {
-        const buyGroupOrder = await UserOrderController._getBuyGroupOrderFromRequest(req);
+        const buyGroupOrder = await MemberOrderController._getBuyGroupOrderFromRequest(req);
         if (buyGroupOrder === false) {
             return res.sendStatus(401);
         }
-        const userId = parseInt(req.user.id);
-        let userOrder = await UserOrders.findOne({
+        const memberId = parseInt(req.user.id);
+        let memberOrder = await MemberOrders.findOne({
             where: {
-                UserId: userId,
+                MemberId: memberId,
                 BuyGroupOrderId: buyGroupOrder.id
             }
         });
-        if (userOrder !== null) {
+        if (memberOrder !== null) {
             return res.sendStatus(401);
         }
-        userOrder = await UserOrders.create({
+        memberOrder = await MemberOrders.create({
             BuyGroupOrderId: buyGroupOrder.id,
-            UserId: userId,
+            MemberId: memberId,
             totalPrice: 0
         });
-        res.send(userOrder);
+        res.send(memberOrder);
     },
     _getBuyGroupOrderFromRequest: async function (req) {
-        const userIdParam = parseInt(req.params['userId']);
-        const userId = parseInt(req.user.id);
-        if (userIdParam !== userId) {
+        const memberIdParam = parseInt(req.params['memberId']);
+        const memberId = parseInt(req.user.id);
+        if (memberIdParam !== memberId) {
             return false;
         }
         const buyGroupIdParam = parseInt(req.params['buyGroupId']);
@@ -95,4 +95,4 @@ const UserOrderController = {
     }
 }
 
-module.exports = UserOrderController;
+module.exports = MemberOrderController;

@@ -1,6 +1,6 @@
 const config = require('../config');
 config.setEnvironment('test');
-const {Users} = require('../model');
+const {Members} = require('../model');
 const jwt = require('jsonwebtoken');
 const chai = require('chai');
 require('chai').should();
@@ -28,7 +28,7 @@ TestUtil.signIn = async function (email) {
 };
 
 TestUtil.getUserByEmail = function (email) {
-    return Users.findOne({
+    return Members.findOne({
         where: {
             email: email
         }

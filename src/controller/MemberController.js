@@ -1,4 +1,4 @@
-const {Users} = require('../model')
+const {Members} = require('../model')
 
 const MemberController = {
     get: async (req, res) => {
@@ -6,11 +6,11 @@ const MemberController = {
         if (memberId !== req.user.id && req.user.status !== "admin") {
             return res.sendStatus(403);
         }
-        const user = await Users.findOne({
+        const user = await Members.findOne({
             where: {
                 id: memberId
             },
-            attributes: Users.getSafeAttributes()
+            attributes: Members.getSafeAttributes()
         })
         res.send(user);
     }

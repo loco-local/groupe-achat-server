@@ -14,8 +14,8 @@ const isAdmin = require('../policy/isAdmin')
 const ProductController = require("../controller/ProductController");
 const BuyGroupController = require("../controller/BuyGroupController");
 const BuyGroupOrderController = require("../controller/BuyGroupOrderController");
-const UserOrderController = require("../controller/UserOrderController");
-const UserOrderItemsController = require("../controller/UserOrderItemsController");
+const MemberOrderController = require("../controller/MemberOrderController");
+const MemberOrderItemsController = require("../controller/MemberOrderItemsController");
 const MemberController = require("../controller/MemberController");
 // router.post(
 //   '/api/register',
@@ -69,6 +69,12 @@ router.get(
 router.get(
     '/buy-group/:buyGroupId',
     BuyGroupController.getForId
+)
+
+router.put(
+    '/buy-group/:buyGroupId',
+    isAuthenticated,
+    BuyGroupController.update
 )
 
 router.get(
@@ -141,45 +147,45 @@ router.put(
 )
 
 router.get(
-    '/buy-group/:buyGroupId/orders/:orderId/userOrders',
+    '/buy-group/:buyGroupId/orders/:orderId/memberOrders',
     isAdmin,
-    BuyGroupOrderController.listUserOrders
+    BuyGroupOrderController.listMemberOrders
 )
 
 router.get(
-    '/buy-group/:buyGroupId/orders/:orderId/userOrders/items',
+    '/buy-group/:buyGroupId/orders/:orderId/memberOrders/items',
     isAdmin,
-    BuyGroupOrderController.listUserOrdersItems
+    BuyGroupOrderController.listMemberOrdersItems
 )
 
 router.get(
-    '/buy-group/:buyGroupId/buy-group-order/:buyGroupOrderId/userOrder/:userId',
+    '/buy-group/:buyGroupId/buy-group-order/:buyGroupOrderId/memberOrder/:memberId',
     isAuthenticated,
-    UserOrderController.getForGroupOrder
+    MemberOrderController.getForGroupOrder
 )
 
 router.get(
-    '/buy-group/:buyGroupId/orders/:buyGroupOrderId/user/:userId/order-items',
+    '/buy-group/:buyGroupId/orders/:buyGroupOrderId/member/:memberId/order-items',
     isAuthenticated,
-    UserOrderController.getDetailsForGroupOrder
+    MemberOrderController.getDetailsForGroupOrder
 )
 
 router.post(
-    '/buy-group/:buyGroupId/buy-group-order/:buyGroupOrderId/userOrder/:userId',
+    '/buy-group/:buyGroupId/buy-group-order/:buyGroupOrderId/memberOrder/:memberId',
     isAuthenticated,
-    UserOrderController.createForGroupOrder
+    MemberOrderController.createForGroupOrder
 )
 
 router.get(
-    '/userOrder/:userOrderId/items',
+    '/memberOrder/:memberOrderId/items',
     isAuthenticated,
-    UserOrderItemsController.listForOrder
+    MemberOrderItemsController.listForOrder
 )
 
 router.post(
-    '/userOrder/:userOrderId/product/:productId/quantity',
+    '/memberOrder/:memberOrderId/product/:productId/quantity',
     isAuthenticated,
-    UserOrderItemsController.setQuantity
+    MemberOrderItemsController.setQuantity
 )
 
 module.exports = router

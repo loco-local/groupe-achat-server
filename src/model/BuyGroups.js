@@ -1,6 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
     const BuyGroups = sequelize.define('BuyGroups', {
         name: DataTypes.STRING,
+        salePercentage: DataTypes.DOUBLE,
         path: {
             type: DataTypes.STRING,
             allowNull: false,

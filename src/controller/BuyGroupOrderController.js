@@ -1,4 +1,4 @@
-const {BuyGroupOrders, UserOrders, UserOrderItems, Users} = require('../model')
+const {BuyGroupOrders, MemberOrders, Members} = require('../model')
 const {Op} = require("sequelize");
 
 const BuyGroupOrderController = {
@@ -7,8 +7,8 @@ const BuyGroupOrderController = {
         if (isNaN(buyGroupId)) {
             return res.sendStatus(401)
         }
-        const userBuyGroupId = parseInt(req.user.BuyGroupId);
-        if (userBuyGroupId !== buyGroupId) {
+        const memberBuyGroupId = parseInt(req.user.BuyGroupId);
+        if (memberBuyGroupId !== buyGroupId) {
             return res.sendStatus(403);
         }
         const orders = await BuyGroupOrders.findAll({
@@ -23,8 +23,8 @@ const BuyGroupOrderController = {
         if (isNaN(buyGroupId)) {
             return res.sendStatus(401)
         }
-        const userBuyGroupId = parseInt(req.user.BuyGroupId);
-        if (userBuyGroupId !== buyGroupId) {
+        const memberBuyGroupId = parseInt(req.user.BuyGroupId);
+        if (memberBuyGroupId !== buyGroupId) {
             return res.sendStatus(403);
         }
         const orders = await BuyGroupOrders.findAll({
@@ -36,7 +36,7 @@ const BuyGroupOrderController = {
         })
         res.send(orders);
     },
-    listUserOrders: async (req, res) => {
+    listMemberOrders: async (req, res) => {
         const buyGroupOrderId = parseInt(req.params['orderId']);
         if (isNaN(buyGroupOrderId)) {
             return res.sendStatus(401)
@@ -47,21 +47,21 @@ const BuyGroupOrderController = {
             }
         })
 
-        const userBuyGroupId = parseInt(req.user.BuyGroupId);
-        if (userBuyGroupId !== buyGroupOrder.BuyGroupId) {
+        const memberBuyGroupId = parseInt(req.user.BuyGroupId);
+        if (memberBuyGroupId !== buyGroupOrder.BuyGroupId) {
             return res.sendStatus(403);
         }
-        const userOrders = await UserOrders.findAll({
+        const MemberOrders = await MemberOrders.findAll({
             where: {
-                BuyGroupOrderId: userBuyGroupId
+                BuyGroupOrderId: memberBuyGroupId
             },
             include: [
-                {model: Users, attributes: ['id', 'firstname', 'lastname']},
+                {model: Members, attributes: ['id', 'firstname', 'lastname']},
             ],
         });
-        res.send(userOrders);
+        res.send(MemberOrders);
     },
-    listUserOrdersItems: async (req, res) => {
+    listMemberOrdersItems: async (req, res) => {
         const buyGroupOrderId = parseInt(req.params['orderId']);
         if (isNaN(buyGroupOrderId)) {
             return res.sendStatus(401)
@@ -72,33 +72,33 @@ const BuyGroupOrderController = {
             }
         })
 
-        const userBuyGroupId = parseInt(req.user.BuyGroupId);
-        if (userBuyGroupId !== buyGroupOrder.BuyGroupId) {
+        const memberBuyGroupId = parseInt(req.user.BuyGroupId);
+        if (memberBuyGroupId !== buyGroupOrder.BuyGroupId) {
             return res.sendStatus(403);
         }
-        const userOrderItems = await UserOrderItems.findAll({
+        const MemberOrderItems = await MemberOrderItems.findAll({
             include: [
                 {
-                    model: UserOrders,
+                    model: MemberOrders,
                     where: {
                         BuyGroupOrderId: buyGroupOrderId
                     },
                     include: [
-                        {model: Users, attributes: ['id', 'firstname', 'lastname']},
+                        {model: Members, attributes: ['id', 'firstname', 'lastname']},
                     ]
                 }
             ]
         })
-        res.send(userOrderItems);
+        res.send(MemberOrderItems);
     },
     create: async (req, res) => {
-        const userBuyGroupId = parseInt(req.user.BuyGroupId);
+        const memberBuyGroupId = parseInt(req.user.BuyGroupId);
         let order = req.body
 
         order = await BuyGroupOrders.create({
             startDate: order.startDate,
             endDate: order.endDate,
-            BuyGroupId: userBuyGroupId
+            BuyGroupId: memberBuyGroupId
         })
         res.send({
             id: order.id
@@ -109,8 +109,8 @@ const BuyGroupOrderController = {
         if (order.id !== parseInt(req.params['orderId'])) {
             return res.sendStatus(401)
         }
-        const userBuyGroupId = parseInt(req.user.BuyGroupId);
-        if (userBuyGroupId !== order.BuyGroupId) {
+        const memberBuyGroupId = parseInt(req.user.BuyGroupId);
+        if (memberBuyGroupId !== order.BuyGroupId) {
             return res.sendStatus(403);
         }
         await BuyGroupOrders.update({
@@ -119,7 +119,7 @@ const BuyGroupOrderController = {
         }, {
             where: {
                 id: order.id,
-                BuyGroupId: userBuyGroupId
+                BuyGroupId: memberBuyGroupId
             }
         });
         res.sendStatus(200);

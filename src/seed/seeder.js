@@ -4,13 +4,13 @@ const Promise = require('bluebird');
 const {addDays} = require("date-fns");
 const {
     sequelize,
-    Users,
+    Members,
     Products,
     BuyGroups,
     BuyGroupOrders
 } = require('../model')
 
-const users = require('./Users.json')
+const members = require('./Members.json')
 const products = require('./Products.json')
 const buyGroups = require('./BuyGroups.json')
 const buyGroupOrders = require('./BuyGroupOrders.json')
@@ -24,8 +24,8 @@ module.exports = {
             })
         )
         await Promise.all(
-            users.map(user => {
-                return Users.create(user);
+            members.map(member => {
+                return Members.create(member)
             })
         )
         await Promise.all(

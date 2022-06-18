@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         }]
     })
     ProductsUpload.defineAssociationsUsingModels = function (model, models) {
-        model.belongsTo(models.Users)
+        model.belongsTo(models.Members)
     }
     return ProductsUpload;
 }

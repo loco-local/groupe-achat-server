@@ -1,10 +1,12 @@
 [
   {
     "name": "Loco Local",
-    "path": "loco-local"
+    "path": "loco-local",
+    "salePercentage" : "9"
   },
   {
     "name": "Collectif Alimentaire",
-    "path": "collectif"
+    "path": "collectif",
+    "salePercentage" : "4"
   }
 ]
