@@ -37,7 +37,8 @@ const BuyGroupController = {
         await BuyGroups.update({
             name: buyGroup.name,
             path: buyGroup.path,
-            salePercentage: buyGroup.salePercentage
+            salePercentage: buyGroup.salePercentage,
+            additionalFees: buyGroup.additionalFees
         }, {
             where: {
                 id: buyGroup.id

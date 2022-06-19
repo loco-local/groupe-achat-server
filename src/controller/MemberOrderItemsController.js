@@ -15,16 +15,37 @@ const MemberOrderItemsController = {
         res.send(items);
     },
     setExpectedQuantity: async (req, res) => {
+        await MemberOrderItemsController._setExpectedOrNotQuantity(
+            true,
+            req,
+            res
+        );
+    },
+    setQuantity: async (req, res) => {
+        await MemberOrderItemsController._setExpectedOrNotQuantity(
+            false,
+            req,
+            res
+        );
+    },
+    _setExpectedOrNotQuantity: async (isExpectedQuantity, req, res) => {
         const order = await MemberOrderItemsController._getOrderFromRequest(req);
         if (order === false) {
             return res.sendStatus(403);
         }
-        const expectedQuantity = parseInt(req.body.expectedQuantity);
-        if (isNaN(expectedQuantity) || expectedQuantity < 0) {
+        let props = {
+            quantity: isExpectedQuantity ? "expectedQuantity" : "quantity",
+            price: isExpectedQuantity ? "expectedPrice" : "price",
+            total: isExpectedQuantity ? "expectedTotal" : "total",
+            totalAfterRebate: isExpectedQuantity ? "expectedTotalAfterRebate" : "totalAfterRebate",
+            totalAfterRebateWithTaxes: isExpectedQuantity ? "expectedTotalAfterRebateWithTaxes" : "totalAfterRebateWithTaxes"
+        };
+        const quantity = parseInt(req.body[props.quantity]);
+        if (isNaN(quantity) || quantity < 0) {
             return res.sendStatus(401);
         }
         const productId = parseInt(req.params['productId']);
-        const memberOrderItem = await MemberOrderItems.findOne({
+        let memberOrderItem = await MemberOrderItems.findOne({
             where: {
                 ProductId: productId
             }
@@ -35,17 +56,17 @@ const MemberOrderItemsController = {
                 id: productId
             }
         })
-        const expectedPrice = await MemberOrderItem.calculatePrice(product, order.BuyGroupOrderId);
-        const tps = MemberOrderItem.calculateTPS(product, expectedPrice, expectedQuantity);
-        const tvq = MemberOrderItem.calculateTVQ(product, expectedPrice, expectedQuantity);
-        let totalPriceBeforeTaxes = parseFloat(expectedPrice * expectedQuantity);
+        const price = await MemberOrderItem.calculatePrice(product, order.BuyGroupOrderId);
+        const tps = MemberOrderItem.calculateTPS(product, price, quantity);
+        const tvq = MemberOrderItem.calculateTVQ(product, price, quantity);
+        let totalPriceBeforeTaxes = parseFloat(price * quantity);
         let totalPriceWithTaxes = parseFloat(totalPriceBeforeTaxes + tps + tvq).toFixed(2);
         totalPriceBeforeTaxes = totalPriceBeforeTaxes.toFixed(2);
-        if (memberOrderItem === null) {
-            await MemberOrderItems.create({
+        const shouldCreate = memberOrderItem === null;
+        if (shouldCreate) {
+            memberOrderItem = {
                 ProductId: productId,
                 MemberOrderId: order.id,
-                expectedQuantity: expectedQuantity,
                 description: product.name,
                 internalCode: product.internalCode,
                 provider: product.provider,
@@ -54,29 +75,25 @@ const MemberOrderItemsController = {
                 qtyInBox: product.qtyInBox,
                 format: product.format,
                 info: product.info,
-                costPrice: product.price,
-                expectedPrice: expectedPrice,
-                expectedTotal: totalPriceBeforeTaxes,
-                expectedTotalAfterRebate: totalPriceBeforeTaxes,
-                expectedTotalAfterRebateWithTaxes: totalPriceWithTaxes,
-                tps: tps,
-                tvq: tvq
-            })
+                costPrice: product.costPrice
+            }
+        }
+        memberOrderItem.tps = tps;
+        memberOrderItem.tvq = tvq;
+        memberOrderItem[props.quantity] = quantity;
+        memberOrderItem[props.price] = price;
+        memberOrderItem[props.total] = totalPriceBeforeTaxes;
+        memberOrderItem[props.totalAfterRebate] = totalPriceBeforeTaxes;
+        memberOrderItem[props.totalAfterRebateWithTaxes] = totalPriceWithTaxes;
+        if (shouldCreate) {
+            await MemberOrderItems.create(memberOrderItem);
         } else {
             if (memberOrderItem.MemberOrderId !== order.id) {
                 return res.sendStatus(401);
             }
-            memberOrderItem.expectedQuantity = expectedQuantity;
-            memberOrderItem.expectedPrice = expectedPrice;
-            memberOrderItem.tps = tps;
-            memberOrderItem.tvq = tvq;
-            memberOrderItem.expectedTotal = totalPriceBeforeTaxes;
-            memberOrderItem.expectedTotalAfterRebate = totalPriceBeforeTaxes;
-            memberOrderItem.expectedTotalAfterRebateWithTaxes = totalPriceWithTaxes;
-
             await memberOrderItem.save();
         }
-        await MemberOrder.buildTotal(order);
+        await MemberOrder.buildTotal(order, props);
         res.sendStatus(200);
     },
     _getOrderFromRequest: async (req) => {
@@ -88,7 +105,7 @@ const MemberOrderItemsController = {
             },
             attributes: ['id', 'MemberId', 'BuyGroupOrderId']
         });
-        if (order.MemberId !== memberId) {
+        if (order.MemberId !== memberId && req.user.status !== 'admin') {
             return false;
         }
         return order;

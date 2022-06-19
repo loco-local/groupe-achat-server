@@ -188,4 +188,10 @@ router.post(
     MemberOrderItemsController.setExpectedQuantity
 )
 
+router.post(
+    '/memberOrder/:memberOrderId/product/:productId/quantity',
+    isAdmin,
+    MemberOrderItemsController.setQuantity
+)
+
 module.exports = router

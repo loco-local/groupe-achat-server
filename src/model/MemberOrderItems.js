@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         expectedTotalAfterRebate: DataTypes.DOUBLE,
         expectedTotalAfterRebateWithTaxes: DataTypes.DOUBLE,
         price: DataTypes.DOUBLE,
+        total: DataTypes.DOUBLE,
         totalAfterRebate: DataTypes.DOUBLE,
         totalAfterRebateWithTaxes: DataTypes.DOUBLE,
         rebates: DataTypes.JSON,

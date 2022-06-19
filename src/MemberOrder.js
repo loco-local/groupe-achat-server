@@ -1,7 +1,7 @@
 const {MemberOrderItems} = require('./model')
 
 const MemberOrder = {
-    buildTotal: async function (memberOrder, items) {
+    buildTotal: async function (memberOrder, props, items) {
         if (items === undefined) {
             items = await MemberOrderItems.findAll({
                 where: {
@@ -10,9 +10,9 @@ const MemberOrder = {
             })
         }
         let totalPrice = items.reduce(function (sum, item) {
-            return (sum) + (item.totalAfterRebateWithTaxes)
+            return (sum) + (item[props.totalAfterRebateWithTaxes])
         }, 0);
-        memberOrder.total = parseFloat(totalPrice).toFixed(2);
+        memberOrder[props.total] = parseFloat(totalPrice).toFixed(2);
         await memberOrder.save();
     }
 }
