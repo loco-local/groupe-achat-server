@@ -194,4 +194,10 @@ router.post(
     MemberOrderItemsController.setQuantity
 )
 
+router.post(
+    '/memberOrder/:memberOrderId/product/:productId/cost-price',
+    isAdmin,
+    MemberOrderItemsController.setCostPrice
+)
+
 module.exports = router

@@ -6,14 +6,14 @@ const MemberOrderItem = {
     calculateTVQ(orderItem, price, quantity) {
         return orderItem.hasTVQ ? price * 0.09975 * quantity : 0;
     },
-    async calculatePrice(orderItem, buyGroupOrderId) {
+    async calculatePrice(costPrice, buyGroupOrderId) {
         const buyGroupOrder = await BuyGroupOrders.findOne({
             where: {
                 id: buyGroupOrderId
             },
             attributes: ['salePercentage']
         });
-        return orderItem.costPrice * (1 + (buyGroupOrder.salePercentage / 100));
+        return costPrice * (1 + (buyGroupOrder.salePercentage / 100));
     },
     getPrice(orderItem) {
         if (orderItem.price) {
