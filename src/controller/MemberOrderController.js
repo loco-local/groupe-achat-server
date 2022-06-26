@@ -36,7 +36,7 @@ const MemberOrderController = {
         if (memberId !== req.user.id && req.user.status !== "admin") {
             return res.sendStatus(403);
         }
-        const MemberOrderItems = await MemberOrderItems.findAll({
+        const memberOrderItems = await MemberOrderItems.findAll({
             include: [
                 {
                     model: MemberOrders,
@@ -50,7 +50,7 @@ const MemberOrderController = {
                 }
             ]
         })
-        res.send(MemberOrderItems);
+        res.send(memberOrderItems);
     },
     createForGroupOrder: async (req, res) => {
         const buyGroupOrder = await MemberOrderController._getBuyGroupOrderFromRequest(req);
