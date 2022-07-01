@@ -13,8 +13,19 @@ const MemberController = {
             attributes: Members.getSafeAttributes()
         })
         res.send(user);
+    },
+    listForBuyGroup: async (req, res) => {
+        const buyGroupId = parseInt(req.params.buyGroupId);
+        if (buyGroupId !== req.user.BuyGroupId) {
+            return res.sendStatus(401)
+        }
+        const members = await Members.findAll({
+            where: {
+                BuyGroupId: buyGroupId
+            },
+            attributes: Members.getSafeAttributes()
+        })
+        res.send(members);
     }
-
 }
-
 module.exports = MemberController;

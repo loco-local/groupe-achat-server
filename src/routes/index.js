@@ -49,6 +49,12 @@ router.get(
     MemberController.get
 )
 
+router.get(
+    '/members/list/:buyGroupId',
+    isAdmin,
+    MemberController.listForBuyGroup
+)
+
 router.post(
     '/products',
     isAdmin,

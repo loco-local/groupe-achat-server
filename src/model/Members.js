@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         indexes: [{
             unique: true,
-            fields: ['uuid', 'resetPasswordToken', 'email']
+            fields: ['uuid', 'resetPasswordToken', 'email', 'BuyGroupId']
         }]
     })
     Member.prototype.comparePassword = function (password) {
