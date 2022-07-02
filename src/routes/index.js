@@ -49,6 +49,12 @@ router.get(
     MemberController.get
 )
 
+router.put(
+    '/members/:memberId',
+    isAuthenticated,
+    MemberController.update
+)
+
 router.get(
     '/members/list/:buyGroupId',
     isAdmin,
