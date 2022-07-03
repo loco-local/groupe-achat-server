@@ -27,6 +27,7 @@ const MemberController = {
             phone2: req.body.phone2,
             address: req.body.address,
             pronoun: req.body.pronoun,
+            rebates: req.body.rebates
         }, {
             where: {
                 id: memberId

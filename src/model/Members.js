@@ -34,7 +34,8 @@ module.exports = (sequelize, DataTypes) => {
         resetPasswordToken: DataTypes.STRING,
         resetPasswordExpires: DataTypes.DATE,
         status: DataTypes.STRING,
-        locale: DataTypes.STRING
+        locale: DataTypes.STRING,
+        rebates: DataTypes.JSON
     }, {
         hooks: {
             beforeCreate: hashPassword,
@@ -49,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
         return bcrypt.compareAsync(password, this.password)
     }
     Member.getSafeAttributes = function () {
-        return ["email", "id", "uuid", "locale", "firstname", "lastname", "status", "phone1", "phone2", "address", "createdAt","pronoun"]
+        return ["email", "id", "uuid", "locale", "firstname", "lastname", "status", "phone1", "phone2", "address", "createdAt", "pronoun", "rebates"]
     };
     Member.getFewAttributes = function () {
         return ["uuid", "locale", "firstname", "lastname", "status"]
