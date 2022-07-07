@@ -2,7 +2,7 @@
   {
     "name": "Avoine",
     "description": "",
-    "expectedCostPrice": 2.50,
+    "expectedCostUnitPrice": 2.50,
     "hasDecimalQuantity": true,
     "isPriceInKg": true,
     "hasTPS": true,
@@ -15,7 +15,7 @@
   {
     "name": "Moutarde de dijon",
     "description": "",
-    "expectedCostPrice": 2.50,
+    "expectedCostUnitPrice": 2.50,
     "hasDecimalQuantity": true,
     "isPriceInKg": true,
     "hasTPS": true,

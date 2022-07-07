@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         qtyInBox: DataTypes.STRING,
         format: DataTypes.STRING,
-        expectedCostPrice: DataTypes.DOUBLE,
+        expectedCostUnitPrice: DataTypes.DOUBLE,
         isPriceInKg: DataTypes.BOOLEAN,
         hasTPS: DataTypes.BOOLEAN,
         hasTVQ: DataTypes.BOOLEAN,

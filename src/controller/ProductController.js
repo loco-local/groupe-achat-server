@@ -83,7 +83,7 @@ const ProductController = {
                 const productInDb = productsOfSatau[product.internalCode];
                 if (productInDb === undefined) {
                     product.action = "create"
-                } else if (productInDb.expectedCostPrice !== product.expectedCostPrice) {
+                } else if (productInDb.expectedCostUnitPrice !== product.expectedCostUnitPrice) {
                     product.action = "updatePrice"
                 } else {
                     product.action = "nothing"
@@ -127,7 +127,7 @@ const ProductController = {
                     await Products.create(product);
                 } else if (product.action === "updatePrice") {
                     await Products.update({
-                        expectedCostPrice: product.expectedCostPrice,
+                        expectedCostUnitPrice: product.expectedCostUnitPrice,
                     }, {
                         where: {
                             id: product.id
@@ -173,7 +173,7 @@ const ProductController = {
         product = await Products.create({
             name: product.name,
             format: product.format,
-            expectedCostPrice: product.expectedCostPrice,
+            expectedCostUnitPrice: product.expectedCostUnitPrice,
             internalCode: product.internalCode,
             maker: product.maker,
             provider: product.provider,
@@ -197,7 +197,7 @@ const ProductController = {
         await Products.update({
             name: product.name,
             format: product.format,
-            expectedCostPrice: product.expectedCostPrice,
+            expectedCostUnitPrice: product.expectedCostUnitPrice,
             internalCode: product.internalCode,
             maker: product.maker,
             provider: product.provider,

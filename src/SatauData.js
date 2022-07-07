@@ -5,7 +5,7 @@ const indexes = {
     internalCode: 4,
     qtyInBox: 6,
     format: 7,
-    expectedCostPrice: 8
+    expectedCostUnitPrice: 8
 }
 const SatauData = {
     formatEntries: function (entries) {
@@ -24,7 +24,7 @@ const SatauData = {
             internalCode: data[SatauData._properyName(indexes.internalCode)].trim(),
             qtyInBox: data[SatauData._properyName(indexes.qtyInBox)],
             format: data[SatauData._properyName(indexes.format)],
-            expectedCostPrice: data[SatauData._properyName(indexes.expectedCostPrice)],
+            expectedCostUnitPrice: data[SatauData._properyName(indexes.expectedCostUnitPrice)],
             isAvailable: true,
             createdAt: new Date(),
             updatedAt: new Date()
