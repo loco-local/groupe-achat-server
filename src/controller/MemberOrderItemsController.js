@@ -44,6 +44,7 @@ const MemberOrderItemsController = {
             quantity: isForExpectedValues ? "expectedQuantity" : "quantity",
             costUnitPrice: isForExpectedValues ? "expectedCostUnitPrice" : "costUnitPrice",
             unitPrice: isForExpectedValues ? "expectedUnitPrice" : "unitPrice",
+            unitPriceAfterRebate: isForExpectedValues ? "expectedUnitPriceAfterRebate" : "unitPriceAfterRebate",
             total: isForExpectedValues ? "expectedTotal" : "total",
             totalAfterRebate: isForExpectedValues ? "expectedTotalAfterRebate" : "totalAfterRebate",
             totalAfterRebateWithTaxes: isForExpectedValues ? "expectedTotalAfterRebateWithTaxes" : "totalAfterRebateWithTaxes"
@@ -79,19 +80,23 @@ const MemberOrderItemsController = {
             if (isNaN(costUnitPrice) || costUnitPrice < 0) {
                 return res.sendStatus(401);
             }
-        } else if (memberOrderItem && !isNaN(memberOrderItem[props.costUnitPrice])) {
+        } else if (memberOrderItem && !isNaN(memberOrderItem[props.costUnitPrice]) && memberOrderItem[props.costUnitPrice] !== null) {
             costUnitPrice = parseFloat(memberOrderItem[props.costUnitPrice]);
         } else {
             costUnitPrice = parseFloat(product.expectedCostUnitPrice);
         }
-        const unitPrice = await MemberOrderItem.calculateUnitPrice(
+        const unitPrices = await MemberOrderItem.calculateUnitPrices(
             costUnitPrice,
-            order.BuyGroupOrderId
+            order.BuyGroupOrderId,
+            order.MemberId
         );
-        const tps = MemberOrderItem.calculateTPS(product, unitPrice, quantity);
-        const tvq = MemberOrderItem.calculateTVQ(product, unitPrice, quantity);
-        let totalPriceBeforeTaxes = parseFloat(unitPrice * quantity);
+
+        const tps = MemberOrderItem.calculateTPS(product, unitPrices.unitPriceAfterRebate, quantity);
+        const tvq = MemberOrderItem.calculateTVQ(product, unitPrices.unitPriceAfterRebate, quantity);
+        const totalWithoutRebate = parseFloat(unitPrices.unitPrice * quantity).toFixed(2);
+        let totalPriceBeforeTaxes = parseFloat(unitPrices.unitPriceAfterRebate * quantity);
         let totalPriceWithTaxes = parseFloat(totalPriceBeforeTaxes + tps + tvq).toFixed(2);
+
         totalPriceBeforeTaxes = totalPriceBeforeTaxes.toFixed(2);
         const shouldCreate = memberOrderItem === null;
         if (shouldCreate) {
@@ -115,8 +120,9 @@ const MemberOrderItemsController = {
         memberOrderItem.tvq = tvq;
         memberOrderItem[props.costUnitPrice] = costUnitPrice;
         memberOrderItem[props.quantity] = quantity;
-        memberOrderItem[props.unitPrice] = unitPrice;
-        memberOrderItem[props.total] = totalPriceBeforeTaxes;
+        memberOrderItem[props.unitPrice] = unitPrices.unitPrice;
+        memberOrderItem[props.unitPriceAfterRebate] = unitPrices.unitPriceAfterRebate;
+        memberOrderItem[props.total] = totalWithoutRebate;
         memberOrderItem[props.totalAfterRebate] = totalPriceBeforeTaxes;
         memberOrderItem[props.totalAfterRebateWithTaxes] = totalPriceWithTaxes;
         if (shouldCreate) {
@@ -131,7 +137,8 @@ const MemberOrderItemsController = {
         const response = {};
         response[props.costUnitPrice] = costUnitPrice;
         response[props.quantity] = quantity;
-        response[props.unitPrice] = unitPrice;
+        response[props.unitPrice] = unitPrices.unitPrice;
+        response[props.unitPriceAfterRebate] = unitPrices.unitPriceAfterRebate;
         response[props.total] = totalPriceBeforeTaxes;
         response[props.totalAfterRebate] = totalPriceBeforeTaxes;
         response[props.totalAfterRebateWithTaxes] = totalPriceWithTaxes;

@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         costUnitPriceUponReceipt: DataTypes.DOUBLE,
         costPriceTotalUponReceipt: DataTypes.DOUBLE,
         expectedUnitPrice: DataTypes.DOUBLE,
+        expectedUnitPriceAfterRebate: DataTypes.DOUBLE,
         expectedTotal: DataTypes.DOUBLE,
         expectedTotalAfterRebate: DataTypes.DOUBLE,
         expectedTotalAfterRebateWithTaxes: DataTypes.DOUBLE,

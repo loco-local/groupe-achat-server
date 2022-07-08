@@ -45,7 +45,7 @@ const MemberOrderController = {
                         MemberId: memberId
                     },
                     include: [
-                        {model: Members, attributes: ['id', 'firstname', 'lastname']},
+                        {model: Members, attributes: ['id', 'firstname', 'lastname', 'rebates']},
                     ]
                 }
             ]
