@@ -6,7 +6,7 @@ const MemberOrderController = {
         if (buyGroupOrder === false || buyGroupOrder === null) {
             return res.sendStatus(401);
         }
-        const memberId = parseInt(req.user.id);
+        const memberId = parseInt(req.params['memberId']);
         const memberOrder = await MemberOrders.findOne({
             where: {
                 MemberId: memberId,
@@ -76,8 +76,8 @@ const MemberOrderController = {
     },
     _getBuyGroupOrderFromRequest: async function (req) {
         const memberIdParam = parseInt(req.params['memberId']);
-        const memberId = parseInt(req.user.id);
-        if (memberIdParam !== memberId) {
+        const requestMemberId = parseInt(req.user.id);
+        if (memberIdParam !== requestMemberId && req.user.status !== 'admin') {
             return false;
         }
         const buyGroupIdParam = parseInt(req.params['buyGroupId']);
