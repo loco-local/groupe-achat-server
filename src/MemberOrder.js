@@ -10,7 +10,11 @@ const MemberOrder = {
             })
         }
         let totalPrice = items.reduce(function (sum, item) {
-            return (sum) + (item[props.totalAfterRebateWithTaxes])
+            let price = item[props.totalAfterRebateWithTaxes];
+            if (price === null) {
+                price = item.expectedTotalAfterRebateWithTaxes;
+            }
+            return sum + price;
         }, 0);
         memberOrder[props.total] = parseFloat(totalPrice).toFixed(2);
         await memberOrder.save();
