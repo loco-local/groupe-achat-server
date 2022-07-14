@@ -23,6 +23,11 @@ module.exports = (sequelize, DataTypes) => {
         tps: DataTypes.DOUBLE,
         hasTPS: DataTypes.BOOLEAN,
         hasTVQ: DataTypes.BOOLEAN,
+        isVisibleForSuperVolunteerOnly: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        },
         info: DataTypes.JSON,
         internalCode: DataTypes.STRING,
         provider: DataTypes.STRING,

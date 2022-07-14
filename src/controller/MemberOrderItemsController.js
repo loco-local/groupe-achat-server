@@ -88,7 +88,8 @@ const MemberOrderItemsController = {
         const unitPrices = await MemberOrderItem.calculateUnitPrices(
             costUnitPrice,
             order.BuyGroupOrderId,
-            order.MemberId
+            order.MemberId,
+            product.isVisibleForSuperVolunteerOnly
         );
 
         const tps = MemberOrderItem.calculateTPS(product, unitPrices.unitPriceAfterRebate, quantity);
@@ -113,7 +114,8 @@ const MemberOrderItemsController = {
                 info: product.info,
                 expectedCostUnitPrice: product.expectedCostUnitPrice,
                 hasTPS: product.hasTPS,
-                hasTVQ: product.hasTVQ
+                hasTVQ: product.hasTVQ,
+                isVisibleForSuperVolunteerOnly: product.isVisibleForSuperVolunteerOnly
             }
         }
         memberOrderItem.tps = tps;

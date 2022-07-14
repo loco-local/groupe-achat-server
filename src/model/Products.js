@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
         isPriceInKg: DataTypes.BOOLEAN,
         hasTPS: DataTypes.BOOLEAN,
         hasTVQ: DataTypes.BOOLEAN,
+        isVisibleForSuperVolunteerOnly: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        },
         image: DataTypes.JSONB,
         nbInStock: DataTypes.DOUBLE,
         isAvailable: DataTypes.BOOLEAN,

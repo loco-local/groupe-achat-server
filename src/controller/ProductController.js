@@ -180,6 +180,7 @@ const ProductController = {
             isAvailable: true,
             hasTPS: product.hasTPS,
             hasTVQ: product.hasTVQ,
+            isVisibleForSuperVolunteerOnly: product.isVisibleForSuperVolunteerOnly,
             isPutForward: true,
         })
         res.send({
@@ -204,6 +205,7 @@ const ProductController = {
             isAvailable: true,
             hasTPS: product.hasTPS,
             hasTVQ: product.hasTVQ,
+            isVisibleForSuperVolunteerOnly: product.isVisibleForSuperVolunteerOnly,
             isPutForward: true,
         }, {
             where: {
