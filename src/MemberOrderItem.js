@@ -6,8 +6,8 @@ const MemberOrderItem = {
     calculateTVQ(orderItem, price, quantity) {
         return orderItem.hasTVQ ? price * 0.09975 * quantity : 0;
     },
-    async calculateUnitPrices(costUnitPrice, buyGroupOrderId, memberId, isVisibleForSuperVolunteerOnly) {
-        if (isVisibleForSuperVolunteerOnly) {
+    async calculateUnitPrices(costUnitPrice, buyGroupOrderId, memberId, isAdminRelated) {
+        if (isAdminRelated) {
             return {
                 unitPrice: costUnitPrice,
                 unitPriceAfterRebate: costUnitPrice

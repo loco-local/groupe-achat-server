@@ -33,7 +33,7 @@
     "isPriceInKg": false,
     "hasTPS": true,
     "hasTVQ": true,
-    "isVisibleForSuperVolunteerOnly": true,
+    "isAdminRelated": true,
     "internalCode": "transport",
     "provider": null,
     "isAvailable": true,

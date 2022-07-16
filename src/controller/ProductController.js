@@ -24,6 +24,16 @@ const ProductController = {
         });
         res.send(products);
     },
+    listAdminRelated: async (req, res) => {
+        const buyGroupId = parseInt(req.params['buyGroupId']);
+        const products = await Products.findAll({
+            where: {
+                isAdminRelated: true,
+                BuyGroupId: buyGroupId
+            }
+        });
+        res.send(products);
+    },
     putForward: async (req, res) => {
         const products = req.body;
         await Promise.all(products.map(async (product) => {
@@ -180,7 +190,7 @@ const ProductController = {
             isAvailable: true,
             hasTPS: product.hasTPS,
             hasTVQ: product.hasTVQ,
-            isVisibleForSuperVolunteerOnly: product.isVisibleForSuperVolunteerOnly,
+            isAdminRelated: product.isAdminRelated,
             isPutForward: true,
         })
         res.send({
@@ -205,7 +215,7 @@ const ProductController = {
             isAvailable: true,
             hasTPS: product.hasTPS,
             hasTVQ: product.hasTVQ,
-            isVisibleForSuperVolunteerOnly: product.isVisibleForSuperVolunteerOnly,
+            isAdminRelated: product.isAdminRelated,
             isPutForward: true,
         }, {
             where: {

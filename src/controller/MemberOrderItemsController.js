@@ -89,7 +89,7 @@ const MemberOrderItemsController = {
             costUnitPrice,
             order.BuyGroupOrderId,
             order.MemberId,
-            product.isVisibleForSuperVolunteerOnly
+            product.isAdminRelated
         );
 
         const tps = MemberOrderItem.calculateTPS(product, unitPrices.unitPriceAfterRebate, quantity);
@@ -115,7 +115,7 @@ const MemberOrderItemsController = {
                 expectedCostUnitPrice: product.expectedCostUnitPrice,
                 hasTPS: product.hasTPS,
                 hasTVQ: product.hasTVQ,
-                isVisibleForSuperVolunteerOnly: product.isVisibleForSuperVolunteerOnly
+                isAdminRelated: product.isAdminRelated
             }
         }
         memberOrderItem.tps = tps;

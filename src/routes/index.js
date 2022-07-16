@@ -17,6 +17,7 @@ const BuyGroupOrderController = require("../controller/BuyGroupOrderController")
 const MemberOrderController = require("../controller/MemberOrderController");
 const MemberOrderItemsController = require("../controller/MemberOrderItemsController");
 const MemberController = require("../controller/MemberController");
+const GroupOrderAllBillsFeesController = require("../controller/GroupOrderAllBillsFeesController");
 // router.post(
 //   '/api/register',
 //   AuthenticationControllerPolicy.register,
@@ -97,6 +98,11 @@ router.get(
 router.get(
     '/buy-group/:buyGroupId/products/deprecated',
     ProductController.listDeprecated
+)
+
+router.get(
+    '/buy-group/:buyGroupId/products/admin-related',
+    ProductController.listAdminRelated
 )
 
 router.post(
@@ -186,6 +192,18 @@ router.post(
     '/buy-group/:buyGroupId/buy-group-order/:buyGroupOrderId/memberOrder/:memberId',
     isAuthenticated,
     MemberOrderController.createForGroupOrder
+)
+
+router.get(
+    '/buy-group/:buyGroupId/buy-group-order/:buyGroupOrderId/fees-for-all-bills',
+    isAdmin,
+    GroupOrderAllBillsFeesController.list
+)
+
+router.post(
+    '/buy-group/:buyGroupId/buy-group-order/:buyGroupOrderId/fees-for-all-bills/product/:productId/quantity',
+    isAdmin,
+    GroupOrderAllBillsFeesController.setQuantity
 )
 
 router.get(

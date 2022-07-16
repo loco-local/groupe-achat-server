@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         isPriceInKg: DataTypes.BOOLEAN,
         hasTPS: DataTypes.BOOLEAN,
         hasTVQ: DataTypes.BOOLEAN,
-        isVisibleForSuperVolunteerOnly: {
+        isAdminRelated: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false
@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         },
     }, {
         indexes: [{
-            fields: ['internalCode', 'isPutForward', 'BuyGroupId']
+            fields: ['internalCode', 'isPutForward', 'BuyGroupId', 'isAdminRelated']
         }]
     })
     Products.defineAssociationsUsingModels = function (model, models) {
