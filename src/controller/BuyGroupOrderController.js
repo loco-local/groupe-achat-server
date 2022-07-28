@@ -2,6 +2,19 @@ const {BuyGroupOrders, MemberOrders, Members, MemberOrderItems, BuyGroups} = req
 const {Op} = require("sequelize");
 
 const BuyGroupOrderController = {
+    getById: async (req, res) => {
+        const buyGroupOrderId = parseInt(req.params['buyGroupOrderId']);
+        const memberBuyGroupId = parseInt(req.user.BuyGroupId);
+        const buyGroupOrder = await BuyGroupOrders.findOne({
+            where: {
+                id: buyGroupOrderId
+            }
+        })
+        if (memberBuyGroupId !== buyGroupOrder.BuyGroupId) {
+            return res.sendStatus(403);
+        }
+        res.send(buyGroupOrder);
+    },
     list: async (req, res) => {
         const buyGroupId = parseInt(req.params['buyGroupId']);
         if (isNaN(buyGroupId)) {
@@ -53,7 +66,7 @@ const BuyGroupOrderController = {
         }
         const memberOrders = await MemberOrders.findAll({
             where: {
-                BuyGroupOrderId: memberBuyGroupId
+                BuyGroupOrderId: buyGroupOrderId
             },
             include: [
                 {model: Members, attributes: ['id', 'firstname', 'lastname']},
@@ -105,6 +118,7 @@ const BuyGroupOrderController = {
             salePercentage: order.salePercentage || buyGroup.salePercentage,
             additionalFees: order.additionalFees || buyGroup.additionalFees,
             howToPay: order.howToPay || buyGroup.howToPay,
+            comment: order.comment,
             BuyGroupId: memberBuyGroupId
         })
         res.send({
@@ -131,6 +145,7 @@ const BuyGroupOrderController = {
             salePercentage: order.salePercentage || buyGroup.salePercentage,
             additionalFees: order.additionalFees || buyGroup.additionalFees,
             howToPay: order.howToPay || buyGroup.howToPay,
+            comment: order.comment
         }, {
             where: {
                 id: order.id,

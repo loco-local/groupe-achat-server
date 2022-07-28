@@ -158,6 +158,12 @@ router.post(
     BuyGroupOrderController.create
 )
 
+router.get(
+    '/buy-group/:buyGroupId/orders/:buyGroupOrderId',
+    isAuthenticated,
+    BuyGroupOrderController.getById
+)
+
 router.put(
     '/buy-group/:buyGroupId/orders/:buyGroupOrderId',
     isAdmin,
@@ -175,6 +181,7 @@ router.get(
     isAdmin,
     BuyGroupOrderController.listMemberOrdersItems
 )
+
 
 router.get(
     '/buy-group/:buyGroupId/buy-group-order/:buyGroupOrderId/memberOrder/:memberId',
