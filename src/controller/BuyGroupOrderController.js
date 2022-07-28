@@ -1,4 +1,4 @@
-const {BuyGroupOrders, MemberOrders, Members, MemberOrderItems} = require('../model')
+const {BuyGroupOrders, MemberOrders, Members, MemberOrderItems, BuyGroups} = require('../model')
 const {Op} = require("sequelize");
 
 const BuyGroupOrderController = {
@@ -94,10 +94,17 @@ const BuyGroupOrderController = {
     create: async (req, res) => {
         const memberBuyGroupId = parseInt(req.user.BuyGroupId);
         let order = req.body
-
+        const buyGroup = await BuyGroups.findOne({
+            where: {
+                id: memberBuyGroupId
+            }
+        })
         order = await BuyGroupOrders.create({
             startDate: order.startDate,
             endDate: order.endDate,
+            salePercentage: order.salePercentage || buyGroup.salePercentage,
+            additionalFees: order.additionalFees || buyGroup.additionalFees,
+            howToPay: order.howToPay || buyGroup.howToPay,
             BuyGroupId: memberBuyGroupId
         })
         res.send({
@@ -106,16 +113,24 @@ const BuyGroupOrderController = {
     },
     update: async (req, res) => {
         let order = req.body
-        if (order.id !== parseInt(req.params['orderId'])) {
+        if (order.id !== parseInt(req.params['buyGroupOrderId'])) {
             return res.sendStatus(401)
         }
         const memberBuyGroupId = parseInt(req.user.BuyGroupId);
         if (memberBuyGroupId !== order.BuyGroupId) {
             return res.sendStatus(403);
         }
+        const buyGroup = await BuyGroups.findOne({
+            where: {
+                id: memberBuyGroupId
+            }
+        })
         await BuyGroupOrders.update({
             startDate: order.startDate,
-            endDate: order.endDate
+            endDate: order.endDate,
+            salePercentage: order.salePercentage || buyGroup.salePercentage,
+            additionalFees: order.additionalFees || buyGroup.additionalFees,
+            howToPay: order.howToPay || buyGroup.howToPay,
         }, {
             where: {
                 id: order.id,

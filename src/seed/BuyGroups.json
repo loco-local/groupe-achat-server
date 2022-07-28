@@ -3,7 +3,8 @@
     "name": "Loco Local",
     "path": "loco-local",
     "salePercentage" : "9",
-    "additionalFees": "Frais de transports répartis également sur les commandes"
+    "additionalFees": "Frais de transports répartis également sur les commandes",
+    "howToPay": "Faites un virement par courriel à admin@loco-local.net ou un virement à notre folio etc"
   },
   {
     "name": "Collectif Alimentaire",

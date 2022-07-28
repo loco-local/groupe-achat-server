@@ -38,7 +38,8 @@ const BuyGroupController = {
             name: buyGroup.name,
             path: buyGroup.path,
             salePercentage: buyGroup.salePercentage,
-            additionalFees: buyGroup.additionalFees
+            additionalFees: buyGroup.additionalFees,
+            howToPay: buyGroup.howToPay
         }, {
             where: {
                 id: buyGroup.id

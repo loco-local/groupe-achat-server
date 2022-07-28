@@ -159,7 +159,7 @@ router.post(
 )
 
 router.put(
-    '/buy-group/:buyGroupId/orders',
+    '/buy-group/:buyGroupId/orders/:buyGroupOrderId',
     isAdmin,
     BuyGroupOrderController.update
 )

@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
         name: DataTypes.STRING,
         salePercentage: DataTypes.DOUBLE,
         additionalFees: DataTypes.TEXT,
+        howToPay: DataTypes.TEXT,
         path: {
             type: DataTypes.STRING,
             allowNull: false,

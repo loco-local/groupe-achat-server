@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
         endDate: DataTypes.DATE,
         salePercentage: DataTypes.DOUBLE,
         additionalFees: DataTypes.TEXT,
+        howToPay: DataTypes.TEXT,
         comment: DataTypes.TEXT
     });
 
