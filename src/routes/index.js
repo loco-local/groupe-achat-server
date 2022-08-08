@@ -18,11 +18,10 @@ const MemberOrderController = require("../controller/MemberOrderController");
 const MemberOrderItemsController = require("../controller/MemberOrderItemsController");
 const MemberController = require("../controller/MemberController");
 const GroupOrderAllBillsFeesController = require("../controller/GroupOrderAllBillsFeesController");
-// router.post(
-//   '/api/register',
-//   AuthenticationControllerPolicy.register,
-//   AuthenticationController.register
-// )
+router.post(
+    '/register',
+    AuthenticationController.register
+)
 
 router.post(
     '/login',

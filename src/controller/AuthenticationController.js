@@ -30,7 +30,7 @@ function jwtSignUser(user) {
 }
 
 const AuthenticationController = {
-        async login (req, res) {
+        async login(req, res) {
             const {email, password} = req.body
             if (password === undefined || password === null || password.trim() === '') {
                 return res.status(403)
@@ -58,6 +58,43 @@ const AuthenticationController = {
             }
             AuthenticationController._loginUser(res, member);
         },
+        async register(req, res) {
+            let member = await Members.findOne({
+                where: {
+                    email: req.body.email.toLowerCase().trim()
+                },
+            });
+            if (member) {
+                return res.sendStatus(401);
+            }
+            member = await Members.create({
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                email: req.body.email,
+                phone1: req.body.phone1,
+                phone2: req.body.phone2,
+                address: req.body.address,
+                pronoun: req.body.pronoun,
+                password: req.body.password,
+                status: "PENDING",
+                BuyGroupId: req.body.BuyGroupId
+            })
+            res.send({
+                member: {
+                    id: member.id,
+                    firstname: member.firstname,
+                    lastname: member.lastname,
+                    email: member.email,
+                    phone1: member.phone1,
+                    phone2: member.phone2,
+                    address: member.address,
+                    pronoun: member.pronoun,
+                    status: member.status,
+                    BuyGroupId: member.BuyGroupId
+                },
+                token: jwtSignUser(member.toJSON())
+            });
+        },
         _loginUser: function (res, user) {
             res.send({
                 user: {
@@ -71,7 +108,8 @@ const AuthenticationController = {
                 },
                 token: jwtSignUser(user.toJSON())
             })
-        },
+        }
+        ,
         async resetPassword(req, res) {
             const {email, locale} = req.body
             const token = await AuthenticationController._resetPassword(email);
