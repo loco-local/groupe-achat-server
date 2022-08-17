@@ -47,7 +47,7 @@ const EmailClient = {
     }
   },
   buildFrom: function (fromEmail) {
-    return 'groupe.achat.hg@gmail.com <' + fromEmail + '>'
+    return 'Groupe d\'achat <' + fromEmail + '>'
   },
   addSupportText: function (emailDescription, language) {
     const content = language.toUpperCase() === 'FR' ? supportTextFR : supportTextEN

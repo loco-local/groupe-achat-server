@@ -129,7 +129,7 @@ const AuthenticationController = {
                     token
                 )
             }
-            EmailClient.addEmailNumber(emailContent, locale, '7401e739')
+            EmailClient.addEmailNumber(emailContent, locale, '8cf6a752')
             await EmailClient.send(emailContent).then(() => {
                 res.sendStatus(200);
             }).catch((error) => {
