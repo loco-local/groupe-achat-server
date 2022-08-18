@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             unique: true
         },
+    }, {
         indexes: [{
             unique: true,
             fields: ['path']
