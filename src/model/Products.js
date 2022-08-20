@@ -29,10 +29,21 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: false
         },
     }, {
-        indexes: [{
-            unique: true,
-            fields: ['internalCode', 'isPutForward', 'BuyGroupId', 'isAdminRelated']
-        }]
+        indexes: [
+            {
+                unique: true,
+                fields: ['internalCode']
+            },
+            {
+                fields: ['isPutForward']
+            },
+            {
+                fields: ['BuyGroupId']
+            },
+            {
+                fields: ['isAdminRelated']
+            }
+        ]
     })
     Products.defineAssociationsUsingModels = function (model, models) {
         model.belongsTo(models.BuyGroups);
