@@ -50,10 +50,10 @@ module.exports = (sequelize, DataTypes) => {
         return bcrypt.compareAsync(password, this.password)
     }
     Member.getSafeAttributes = function () {
-        return ["email", "id", "uuid", "locale", "firstname", "lastname", "status", "phone1", "phone2", "address", "createdAt", "pronoun", "rebates"]
+        return ["email", "id", "uuid", "locale", "firstname", "lastname", "status", "phone1", "phone2", "address", "createdAt", "pronoun", "rebates", "BuyGroupId"]
     };
     Member.getFewAttributes = function () {
-        return ["uuid", "locale", "firstname", "lastname", "status"]
+        return ["uuid", "locale", "firstname", "lastname", "status", "BuyGroupId"]
     };
 
     Member.defineAssociationsUsingModels = function (model, models) {

@@ -19,6 +19,9 @@ const MemberController = {
         if (memberId !== req.user.id && req.user.status !== "admin") {
             return res.sendStatus(403);
         }
+        if (req.body.status !== req.user.status && req.user.status !== "admin") {
+            return res.sendStatus(403);
+        }
         await Members.update({
             firstname: req.body.firstname,
             lastname: req.body.lastname,
@@ -27,7 +30,8 @@ const MemberController = {
             phone2: req.body.phone2,
             address: req.body.address,
             pronoun: req.body.pronoun,
-            rebates: req.body.rebates
+            rebates: req.body.rebates,
+            status: req.body.status
         }, {
             where: {
                 id: memberId
