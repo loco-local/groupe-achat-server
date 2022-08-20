@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         },
     }, {
         indexes: [{
+            unique: true,
             fields: ['internalCode', 'isPutForward', 'BuyGroupId', 'isAdminRelated']
         }]
     })
