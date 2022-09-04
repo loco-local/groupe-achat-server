@@ -181,6 +181,12 @@ router.get(
     BuyGroupOrderController.listMemberOrdersItems
 )
 
+router.get(
+    '/buy-group/:buyGroupId/orders/:orderId/memberOrders/items/quantities',
+    isAuthenticated,
+    BuyGroupOrderController.listMemberOrdersItemsQuantities
+)
+
 
 router.get(
     '/buy-group/:buyGroupId/buy-group-order/:buyGroupOrderId/memberOrder/:memberId',

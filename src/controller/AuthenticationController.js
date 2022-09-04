@@ -4,7 +4,7 @@ const config = require('../config')
 const crypto = require('crypto')
 const sprintf = require('sprintf-js').sprintf
 const EmailClient = require('../EmailClient')
-const axios = require('axios');
+const uuid = require('uuid');
 
 const resetPasswordEn = {
     from: 'horizonsgaspesiens@gmail.com',
@@ -68,6 +68,7 @@ const AuthenticationController = {
                 return res.sendStatus(401);
             }
             member = await Members.create({
+                uuid: uuid(),
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
                 email: req.body.email,
@@ -82,6 +83,7 @@ const AuthenticationController = {
             res.send({
                 member: {
                     id: member.id,
+                    uuid: member.uuid,
                     firstname: member.firstname,
                     lastname: member.lastname,
                     email: member.email,
@@ -108,8 +110,7 @@ const AuthenticationController = {
                 },
                 token: jwtSignUser(user.toJSON())
             })
-        }
-        ,
+        },
         async resetPassword(req, res) {
             const {email, locale} = req.body
             const token = await AuthenticationController._resetPassword(email);
@@ -130,14 +131,13 @@ const AuthenticationController = {
                 )
             }
             EmailClient.addEmailNumber(emailContent, locale, '8cf6a752')
-            await EmailClient.send(emailContent).then(() => {
+            EmailClient.send(emailContent).then(() => {
                 res.sendStatus(200);
             }).catch((error) => {
                 console.log(JSON.stringify(error));
                 res.sendStatus(500);
             });
-        }
-        ,
+        },
         _resetPassword: async function (email) {
             const token = crypto.randomBytes(32).toString('hex')
             const user = await Members.findOne({

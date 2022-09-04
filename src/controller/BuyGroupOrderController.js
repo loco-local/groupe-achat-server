@@ -75,9 +75,33 @@ const BuyGroupOrderController = {
         res.send(memberOrders);
     },
     listMemberOrdersItems: async (req, res) => {
+        const memberOrderItems = await BuyGroupOrderController._listMemberOrderItemsWithMemberOrderIncludeOptions(
+            req, res, undefined, undefined, [
+                {
+                    model: Members,
+                    attributes: ['id', 'firstname', 'lastname']
+                },
+            ]
+        );
+        if (memberOrderItems) {
+            res.send(memberOrderItems);
+        }
+    },
+    listMemberOrdersItemsQuantities: async (req, res) => {
+        let memberOrderItems = await BuyGroupOrderController._listMemberOrderItemsWithMemberOrderIncludeOptions(
+            req, res, ['ProductId', 'expectedQuantity', 'quantity'],
+            ['MemberId'],
+            []
+        );
+        if (memberOrderItems) {
+            res.send(memberOrderItems);
+        }
+    },
+    _listMemberOrderItemsWithMemberOrderIncludeOptions: async (req, res, orderItemAttributes, memberOrderAttributes, memberOrderInclude) => {
         const buyGroupOrderId = parseInt(req.params['orderId']);
         if (isNaN(buyGroupOrderId)) {
-            return res.sendStatus(401)
+            res.sendStatus(401)
+            return false;
         }
         const buyGroupOrder = await BuyGroupOrders.findOne({
             where: {
@@ -87,22 +111,20 @@ const BuyGroupOrderController = {
 
         const memberBuyGroupId = parseInt(req.user.BuyGroupId);
         if (memberBuyGroupId !== buyGroupOrder.BuyGroupId) {
-            return res.sendStatus(403);
+            res.sendStatus(403);
+            return false;
         }
-        const memberOrderItems = await MemberOrderItems.findAll({
-            include: [
-                {
-                    model: MemberOrders,
-                    where: {
-                        BuyGroupOrderId: buyGroupOrderId
-                    },
-                    include: [
-                        {model: Members, attributes: ['id', 'firstname', 'lastname']},
-                    ]
-                }
-            ]
+        return MemberOrderItems.findAll({
+            attributes: orderItemAttributes,
+            include: [{
+                model: MemberOrders,
+                attributes: memberOrderAttributes,
+                where: {
+                    BuyGroupOrderId: buyGroupOrderId
+                },
+                include: memberOrderInclude
+            }]
         })
-        res.send(memberOrderItems);
     },
     create: async (req, res) => {
         const memberBuyGroupId = parseInt(req.user.BuyGroupId);
