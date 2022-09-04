@@ -9,7 +9,7 @@ if (isMock) {
   transport = Transport({})
   emailClient = nodemailer.createTransport(transport)
 } else {
-  sgMail.setApiKey(config.get().sendgrid.key)
+  sgMail.setApiKey(config.get().sendgrid)
 }
 
 const sprintf = require('sprintf-js').sprintf
