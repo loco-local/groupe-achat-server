@@ -141,7 +141,6 @@ router.post(
 
 router.get(
     '/buy-group/:buyGroupId/orders',
-    isAdmin,
     BuyGroupOrderController.list
 )
 

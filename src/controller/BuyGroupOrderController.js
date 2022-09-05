@@ -20,10 +20,6 @@ const BuyGroupOrderController = {
         if (isNaN(buyGroupId)) {
             return res.sendStatus(401)
         }
-        const memberBuyGroupId = parseInt(req.user.BuyGroupId);
-        if (memberBuyGroupId !== buyGroupId) {
-            return res.sendStatus(403);
-        }
         const orders = await BuyGroupOrders.findAll({
             where: {
                 BuyGroupId: buyGroupId
