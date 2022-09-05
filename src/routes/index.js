@@ -147,7 +147,6 @@ router.get(
 
 router.get(
     '/buy-group/:buyGroupId/orders/unfinished',
-    isAuthenticated,
     BuyGroupOrderController.listUnfinished
 )
 
