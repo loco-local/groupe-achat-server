@@ -183,7 +183,7 @@ const ProductController = {
         product = await Products.create({
             name: product.name,
             format: product.format,
-            expectedCostUnitPrice: product.expectedCostUnitPrice,
+            expectedCostUnitPrice: parseFloat(product.expectedCostUnitPrice),
             internalCode: product.internalCode,
             maker: product.maker,
             provider: product.provider,
@@ -191,7 +191,10 @@ const ProductController = {
             hasTPS: product.hasTPS,
             hasTVQ: product.hasTVQ,
             isAdminRelated: product.isAdminRelated,
+            qtyInBox: product.qtyInBox,
+            category: product.category,
             isPutForward: true,
+            BuyGroupId: parseInt(req.user.BuyGroupId)
         })
         res.send({
             id: product.id
@@ -208,15 +211,15 @@ const ProductController = {
         await Products.update({
             name: product.name,
             format: product.format,
-            expectedCostUnitPrice: product.expectedCostUnitPrice,
+            expectedCostUnitPrice: parseFloat(product.expectedCostUnitPrice),
             internalCode: product.internalCode,
+            qtyInBox: product.qtyInBox,
+            category: product.category,
             maker: product.maker,
             provider: product.provider,
-            isAvailable: true,
             hasTPS: product.hasTPS,
             hasTVQ: product.hasTVQ,
             isAdminRelated: product.isAdminRelated,
-            isPutForward: true,
         }, {
             where: {
                 id: product.id
