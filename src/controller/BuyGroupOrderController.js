@@ -61,7 +61,7 @@ const BuyGroupOrderController = {
                 BuyGroupOrderId: buyGroupOrderId
             },
             include: [
-                {model: Members, attributes: ['id', 'firstname', 'lastname']},
+                {model: Members, attributes: ['id', 'firstname', 'lastname', 'email']},
             ],
         });
         res.send(memberOrders);
