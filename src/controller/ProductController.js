@@ -183,7 +183,7 @@ const ProductController = {
         product = await Products.create({
             name: product.name,
             format: product.format,
-            expectedCostUnitPrice: parseFloat(product.expectedCostUnitPrice),
+            expectedCostUnitPrice: product.expectedCostUnitPrice,
             internalCode: product.internalCode,
             maker: product.maker,
             provider: product.provider,
