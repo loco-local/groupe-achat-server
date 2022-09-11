@@ -4,7 +4,7 @@ const config = require('../config')
 const crypto = require('crypto')
 const sprintf = require('sprintf-js').sprintf
 const EmailClient = require('../EmailClient')
-const uuid = require('uuid');
+const {v4: uuidv4} = require('uuid');
 
 const resetPasswordEn = {
     from: 'horizonsgaspesiens@gmail.com',
@@ -68,7 +68,7 @@ const AuthenticationController = {
                 return res.sendStatus(401);
             }
             member = await Members.create({
-                uuid: uuid(),
+                uuid: uuidv4(),
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
                 email: req.body.email,
