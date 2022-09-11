@@ -211,7 +211,7 @@ const ProductController = {
         await Products.update({
             name: product.name,
             format: product.format,
-            expectedCostUnitPrice: parseFloat(product.expectedCostUnitPrice),
+            expectedCostUnitPrice: product.expectedCostUnitPrice,
             internalCode: product.internalCode,
             qtyInBox: product.qtyInBox,
             category: product.category,
