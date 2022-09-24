@@ -205,6 +205,8 @@ const ProductController = {
             BuyGroupId: parseInt(req.user.BuyGroupId)
         })
         res.send({
+            name: product.name,
+            internalCode: product.internalCode,
             id: product.id
         })
     },
