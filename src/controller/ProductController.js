@@ -204,11 +204,7 @@ const ProductController = {
             isPutForward: true,
             BuyGroupId: parseInt(req.user.BuyGroupId)
         })
-        res.send({
-            name: product.name,
-            internalCode: product.internalCode,
-            id: product.id
-        })
+        res.send(product)
     },
     async internalCodeExists(req, res) {
         let internalCode = req.body.internalCode;
