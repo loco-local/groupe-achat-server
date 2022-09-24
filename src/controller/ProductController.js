@@ -179,7 +179,15 @@ const ProductController = {
         res.sendStatus(200);
     },
     async createProduct(req, res) {
-        let product = req.body
+        let product = req.body;
+        const productWithSameCode = await Products.findAll({
+            where: {
+                internalCode: product.internalCode
+            }
+        });
+        if (productWithSameCode.length !== 0) {
+            return res.sendStatus(401);
+        }
         product = await Products.create({
             name: product.name,
             format: product.format,
@@ -198,6 +206,17 @@ const ProductController = {
         })
         res.send({
             id: product.id
+        })
+    },
+    async internalCodeExists(req, res) {
+        let internalCode = req.body.internalCode;
+        const productsWithCode = await Products.findAll({
+            where: {
+                internalCode: internalCode
+            }
+        });
+        res.send({
+            exists: productsWithCode.length > 0
         })
     },
     async updateProduct(req, res) {

@@ -67,6 +67,12 @@ router.post(
     ProductController.createProduct
 )
 
+router.post(
+    '/products/internalCode/exists',
+    isAdmin,
+    ProductController.internalCodeExists
+)
+
 router.put(
     '/products/:productId',
     isAdmin,
