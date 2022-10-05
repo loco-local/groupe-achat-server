@@ -16,7 +16,7 @@ const HNData = {
         let isEntryBuilt = false;
         let lineIndex = 0;
         const entry = {
-            provider: "HN",
+            provider: "Horizon Nature",
             isAvailable: true,
             createdAt: new Date(),
             updatedAt: new Date()
@@ -24,16 +24,17 @@ const HNData = {
         while (!isEntryBuilt && lineIndex < lines.length) {
             let line = lines[lineIndex];
             const internalCode = HNData.getInternalCode(line);
-            if (internalCode !== null) {
+            const maker = line.match(makerRegex);
+            if (internalCode !== null && maker !== null) {
                 entry.internalCode = internalCode;
-                entry.maker = line.match(makerRegex)[0];
+                entry.maker = maker[0];
                 entry.name = HNData.getName(line, entry.maker);
                 const format = HNData.getFormat(line);
                 entry.format = format.format;
                 entry.qtyInBox = format.qtyInBox;
                 entry.expectedCostUnitPrice = HNData.getPrice(line);
-                if (entry.expectedCostUnitPrice === null && lineIndex + 2 < lines.length) {
-                    lineIndex += 2;
+                while(entry.expectedCostUnitPrice === null && lineIndex + 2 < lines.length){
+                    lineIndex ++;
                     line = lines[lineIndex];
                     entry.expectedCostUnitPrice = HNData.getPrice(line);
                 }
@@ -77,7 +78,7 @@ const HNData = {
             return null;
         }
         price = price[0];
-        return price.substring(0, price.indexOf(" "));
+        return parseFloat(price.substring(0, price.indexOf(" ")));
     }
 }
 module.exports = HNData

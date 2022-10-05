@@ -138,6 +138,11 @@ router.post(
     isAdmin,
     ProductController.uploadSatauProducts
 )
+router.post(
+    '/products/upload/provider/hn',
+    isAdmin,
+    ProductController.uploadHnProducts
+)
 
 router.post(
     '/products/upload/:uploadId/accept',

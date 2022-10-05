@@ -17,9 +17,9 @@ const {sequelize} = require('./model')
 
 const cors = require('cors')
 app.use(cors())
+app.use(bodyParser.json({limit: '50mb'}))
 app.use(bodyParser({limit: '50mb'}))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}))
 
 require('./passport')
 

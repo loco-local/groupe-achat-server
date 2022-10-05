@@ -35,17 +35,21 @@ describe('HNData', () => {
     });
     it("retrieves price", async () => {
         const entries = HNData.linesToEntries([
+            "Sec 51090 ABK Raisins Enrobés De Yogourt (6x350g) 067486168051",
+            "1 n/d 22.67 $ 5.39 $",
             "Sec 51190 ABK Raisins Sultana Bio (2.5kg)",
             "B SO",
             "1 n/d 15.95 $ 22.79 $",
             "Sec 87651 BONE Bouillon D'Os Instant Thaï Noix De Coco (9x80g) SG SO 814574001871 1 n/d 60.00 $ 9.99 $",
         ])
-        entries["87651"].expectedCostUnitPrice.should.equal("60.00");
-        entries["51190"].expectedCostUnitPrice.should.equal("15.95");
+        entries["51090"].expectedCostUnitPrice.should.equal(22.67);
+        entries["87651"].expectedCostUnitPrice.should.equal(60.00);
+        entries["51190"].expectedCostUnitPrice.should.equal(15.95);
     });
     it("discards incorrect entries", async () => {
         const entries = HNData.linesToEntries([
             "Bone Brewhouse",
+            "Septembre 2022",
             "Sec 51060 ABK Abricots Bio (2.5kg)",
             "Caisse Prix / Unité Prix / Caisse PDS"
         ])

@@ -3,6 +3,7 @@ const xlsx = require("xlsx");
 const path = require("path");
 const uuid = require('uuid')
 const SatauData = require("../SatauData");
+const HNData = require("../HNData");
 const ProductController = {
     listPutForward: async (req, res) => {
         const buyGroupId = parseInt(req.params['buyGroupId']);
@@ -82,7 +83,8 @@ const ProductController = {
             let productsOfSatau = await Products.findAll({
                 raw: true,
                 where: {
-                    provider: "Satau"
+                    provider: "Satau",
+                    BuyGroupId: parseInt(req.user.BuyGroupId)
                 }
             });
             productsOfSatau = productsOfSatau.reduce((products, product) => {
@@ -119,6 +121,49 @@ const ProductController = {
             })
         })
     },
+    uploadHnProducts: async (req, res) => {
+        const textBlock = req.body.textBlock;
+        let entries = HNData.linesToEntries(textBlock.split("\n"));
+        let productsOfHN = await Products.findAll({
+            raw: true,
+            where: {
+                provider: "Horizon Nature",
+                BuyGroupId: parseInt(req.user.BuyGroupId)
+            }
+        });
+        productsOfHN = productsOfHN.reduce((products, product) => {
+            products[product.internalCode] = product;
+            return products;
+        }, {});
+        entries = Object.values(entries).map((product) => {
+            const productInDb = productsOfHN[product.internalCode];
+            if (productInDb === undefined) {
+                product.action = "create"
+            } else if (productInDb.expectedCostUnitPrice !== product.expectedCostUnitPrice) {
+                product.action = "updatePrice"
+            } else {
+                product.action = "nothing"
+            }
+            delete productsOfHN[product.internalCode];
+            return product;
+        })
+        Object.values(productsOfHN).forEach((productsOfHN) => {
+            if (productsOfHN.isAvailable) {
+                productsOfHN.action = "remove";
+                entries[productsOfHN.internalCode] = productsOfHN;
+            }
+        });
+        const uploadUuid = uuid.v4();
+        await ProductsUpload.create({
+            uuid: uploadUuid,
+            rawData: req.body,
+            formattedData: Object.values(entries)
+        })
+        res.send({
+            formattedData: Object.values(entries),
+            uploadUuid: uploadUuid
+        })
+    },
     acceptUpload: async (req, res) => {
         const uploadUuid = req.params['uploadId'];
         const productsUpload = await ProductsUpload.findOne({
@@ -140,7 +185,8 @@ const ProductController = {
                         expectedCostUnitPrice: product.expectedCostUnitPrice,
                     }, {
                         where: {
-                            id: product.id
+                            internalCode: product.internalCode,
+                            BuyGroupId: parseInt(req.user.BuyGroupId)
                         }
                     });
                 } else if (product.action === "remove") {
@@ -148,7 +194,8 @@ const ProductController = {
                         isAvailable: false,
                     }, {
                         where: {
-                            id: product.id
+                            internalCode: product.internalCode,
+                            BuyGroupId: parseInt(req.user.BuyGroupId)
                         }
                     });
                 }
