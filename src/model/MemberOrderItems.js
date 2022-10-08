@@ -51,5 +51,11 @@ module.exports = (sequelize, DataTypes) => {
         model.belongsTo(models.Products)
         model.belongsTo(models.MemberOrders)
     }
+    MemberOrderItems.filterItemsHavingQuantity = function (items) {
+        return items.filter((item) => {
+            return (item.expectedQuantity !== null && item.expectedQuantity > 0) ||
+                (item.quantity !== null && item.quantity > 0);
+        })
+    }
     return MemberOrderItems
 }

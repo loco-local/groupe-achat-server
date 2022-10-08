@@ -76,7 +76,9 @@ const BuyGroupOrderController = {
             ]
         );
         if (memberOrderItems) {
-            res.send(memberOrderItems);
+            res.send(
+                MemberOrderItems.filterItemsHavingQuantity(memberOrderItems)
+            );
         }
     },
     listMemberOrdersItemsQuantities: async (req, res) => {
@@ -86,7 +88,9 @@ const BuyGroupOrderController = {
             []
         );
         if (memberOrderItems) {
-            res.send(memberOrderItems);
+            res.send(
+                MemberOrderItems.filterItemsHavingQuantity(memberOrderItems)
+            );
         }
     },
     _listMemberOrderItemsWithMemberOrderIncludeOptions: async (req, res, orderItemAttributes, memberOrderAttributes, memberOrderInclude) => {

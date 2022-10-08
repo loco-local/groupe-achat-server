@@ -12,7 +12,9 @@ const MemberOrderItemsController = {
                 MemberOrderId: order.id
             }
         })
-        res.send(items);
+        res.send(
+            MemberOrderItems.filterItemsHavingQuantity(items)
+        );
     },
     setExpectedQuantity: async (req, res) => {
         await MemberOrderItemsController._redefinePricesAndTotals(

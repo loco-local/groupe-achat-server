@@ -50,7 +50,11 @@ const MemberOrderController = {
                 }
             ]
         })
-        res.send(memberOrderItems);
+        res.send(
+            MemberOrderItems.filterItemsHavingQuantity(
+                memberOrderItems
+            )
+        );
     },
     createForGroupOrder: async (req, res) => {
         const buyGroupOrder = await MemberOrderController._getBuyGroupOrderFromRequest(req);
