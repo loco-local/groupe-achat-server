@@ -6,6 +6,7 @@ module.exports = function (req, res, next) {
             res.status(401).send({
                 error: 'you do not have access to this resource'
             })
+            return;
         }
         const userForStatus = await Members.findOne({
             attributes: ['status'],
@@ -17,6 +18,7 @@ module.exports = function (req, res, next) {
             res.status(401).send({
                 error: 'you do not have access to this resource'
             })
+            return;
         } else {
             req.user = user
             next()
