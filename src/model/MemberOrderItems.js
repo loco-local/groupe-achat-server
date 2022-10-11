@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
     const MemberOrderItems = sequelize.define('MemberOrderItems', {
         description: DataTypes.STRING,
-        expectedQuantity: DataTypes.INTEGER,
-        quantity: DataTypes.INTEGER,
+        expectedQuantity: DataTypes.DOUBLE,
+        quantity: DataTypes.DOUBLE,
         expectedCostUnitPrice: DataTypes.DOUBLE,
         costUnitPrice: DataTypes.DOUBLE,
         costPriceTotal: DataTypes.DOUBLE,
