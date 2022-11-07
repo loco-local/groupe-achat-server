@@ -19,7 +19,7 @@ const MemberOrderController = {
         res.send(memberOrder);
     },
     getDetailsForGroupOrder: async (req, res) => {
-        const buyGroupOrderId = parseInt(req.params['buyGroupId']);
+        const buyGroupOrderId = parseInt(req.params['buyGroupOrderId']);
         if (isNaN(buyGroupOrderId)) {
             return res.sendStatus(401)
         }
