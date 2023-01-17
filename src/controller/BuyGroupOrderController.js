@@ -83,7 +83,7 @@ const BuyGroupOrderController = {
     },
     listMemberOrdersItemsQuantities: async (req, res) => {
         let memberOrderItems = await BuyGroupOrderController._listMemberOrderItemsWithMemberOrderIncludeOptions(
-            req, res, ['ProductId', 'expectedQuantity', 'quantity'],
+            req, res, ['ProductId', 'expectedQuantity', 'quantity', 'format', 'qtyInBox'],
             ['MemberId'],
             []
         );
