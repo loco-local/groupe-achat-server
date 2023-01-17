@@ -102,7 +102,8 @@ const BuyGroupOrderController = {
         const buyGroupOrder = await BuyGroupOrders.findOne({
             where: {
                 id: buyGroupOrderId
-            }
+            },
+            attributes: ['BuyGroupId']
         })
 
         const memberBuyGroupId = parseInt(req.user.BuyGroupId);
