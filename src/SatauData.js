@@ -1,11 +1,12 @@
+const StringParser = require("./StringParser");
 const indexes = {
     maker: 1,
-    name: 2,
-    category: 3,
-    internalCode: 4,
-    qtyInBox: 6,
-    format: 7,
-    expectedCostUnitPrice: 8
+    name: 3,
+    category: 2,
+    internalCode: "Date de livraison:",
+    qtyInBox: 7,
+    format: 8,
+    expectedCostUnitPrice: 9
 }
 const SatauData = {
     formatEntries: function (entries) {
@@ -21,10 +22,10 @@ const SatauData = {
             name: data[SatauData._properyName(indexes.name)],
             category: data[SatauData._properyName(indexes.category)],
             maker: data[SatauData._properyName(indexes.maker)],
-            internalCode: data[SatauData._properyName(indexes.internalCode)].trim(),
-            qtyInBox: data[SatauData._properyName(indexes.qtyInBox)],
+            internalCode: data[indexes.internalCode].trim(),
+            qtyInBox: StringParser.getQty(data[SatauData._properyName(indexes.qtyInBox)]),
             format: data[SatauData._properyName(indexes.format)],
-            expectedCostUnitPrice: data[SatauData._properyName(indexes.expectedCostUnitPrice)],
+            expectedCostUnitPrice: StringParser.getQty(data[SatauData._properyName(indexes.expectedCostUnitPrice)]),
             isAvailable: true,
             createdAt: new Date(),
             updatedAt: new Date()
