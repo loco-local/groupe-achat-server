@@ -37,7 +37,7 @@ const AuthenticationController = {
             }
             let member = await Members.findOne({
                 where: {
-                    email: email.trim()
+                    email: email.toLowerCase().trim()
                 }
             });
             if (member === undefined || member === null) {
@@ -71,7 +71,7 @@ const AuthenticationController = {
                 uuid: uuidv4(),
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
-                email: req.body.email,
+                email: req.body.email.toLowerCase(),
                 phone1: req.body.phone1,
                 phone2: req.body.phone2,
                 address: req.body.address,
@@ -86,7 +86,7 @@ const AuthenticationController = {
                     uuid: member.uuid,
                     firstname: member.firstname,
                     lastname: member.lastname,
-                    email: member.email,
+                    email: member.email.toLowerCase(),
                     phone1: member.phone1,
                     phone2: member.phone2,
                     address: member.address,
@@ -104,7 +104,7 @@ const AuthenticationController = {
                     uuid: user.uuid,
                     firstname: user.firstname,
                     lastname: user.lastname,
-                    email: user.email,
+                    email: user.email.toLowerCase(),
                     status: user.status,
                     BuyGroupId: user.BuyGroupId
                 },
@@ -113,7 +113,7 @@ const AuthenticationController = {
         },
         async resetPassword(req, res) {
             const {email, locale} = req.body
-            const token = await AuthenticationController._resetPassword(email);
+            const token = await AuthenticationController._resetPassword(email.toLowerCase());
             if (!token) {
                 return res.sendStatus(400);
             }
@@ -142,7 +142,7 @@ const AuthenticationController = {
             const token = crypto.randomBytes(32).toString('hex')
             const user = await Members.findOne({
                 where: {
-                    email: email
+                    email: email.toLowerCase()
                 }
             });
             if (!user) {
@@ -215,7 +215,7 @@ const AuthenticationController = {
             }
             Members.findOne({
                 where: {
-                    email: email
+                    email: email.toLowerCase()
                 },
                 attributes: ['email', 'uuid', 'locale', 'firstName', 'lastName']
             }).then(function (user) {
