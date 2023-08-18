@@ -77,7 +77,7 @@ const AuthenticationController = {
                 address: req.body.address,
                 pronoun: req.body.pronoun,
                 password: req.body.password,
-                status: "pending",
+                status: "member",
                 BuyGroupId: req.body.BuyGroupId
             })
             res.send({
