@@ -12,6 +12,7 @@ const isAuthenticated = require('../policy/isAuthenticated')
 // const isOwnerArdoiseUserOrAdmin = require('../policy/isOwnerArdoiseUserOrAdmin')
 const isAdmin = require('../policy/isAdmin')
 const ProductController = require("../controller/ProductController");
+const ProductUploadController = require("../controller/ProductUploadController");
 const BuyGroupController = require("../controller/BuyGroupController");
 const BuyGroupOrderController = require("../controller/BuyGroupOrderController");
 const MemberOrderController = require("../controller/MemberOrderController");
@@ -136,18 +137,18 @@ router.post(
 router.post(
     '/products/upload/provider/satau',
     isAdmin,
-    ProductController.uploadSatauProducts
+    ProductUploadController.uploadSatauProducts
 )
 router.post(
     '/products/upload/provider/hn',
     isAdmin,
-    ProductController.uploadHnProducts
+    ProductUploadController.uploadHnProducts
 )
 
 router.post(
     '/products/upload/:uploadId/accept',
     isAdmin,
-    ProductController.acceptUpload
+    ProductUploadController.acceptUpload
 )
 
 router.get(
