@@ -1,38 +1,39 @@
 const StringParser = require("./StringParser");
-const indexes = {
-    maker: 1,
-    name: 3,
-    category: 2,
-    internalCode: "Date de livraison:",
-    qtyInBox: 7,
-    format: 8,
-    expectedCostUnitPrice: 9
-}
+const {ProductsImportAssociations} = require("./model");
+const properties = ProductsImportAssociations.properties;
+const defaultAssociations = {};
+defaultAssociations[properties.maker] = "__EMPTY_1";
+defaultAssociations[properties.name] = "__EMPTY_3";
+defaultAssociations[properties.category] = "__EMPTY_2";
+defaultAssociations[properties.internalCode] = "Date de livraison:";
+defaultAssociations[properties.qtyInBox] = "__EMPTY_7";
+defaultAssociations[properties.format] = "__EMPTY_8";
+defaultAssociations[properties.expectedCostUnitPrice] = "__EMPTY_9";
+
 const SatauData = {
-    formatEntries: function (entries) {
+    defaultAssociations: defaultAssociations,
+    formatEntries: function (entries, productsAssociations) {
+        const associations = productsAssociations.associations;
         return entries.reduce((formattedEntries, entry) => {
-            const formatted = SatauData.formatEntry(entry);
+            const formatted = SatauData.formatEntry(entry, associations);
             formattedEntries[formatted.internalCode] = formatted;
             return formattedEntries;
         }, {});
     },
-    formatEntry: function (data) {
+    formatEntry: function (data, associations) {
         return {
             provider: "Satau",
-            name: data[SatauData._properyName(indexes.name)],
-            category: data[SatauData._properyName(indexes.category)],
-            maker: data[SatauData._properyName(indexes.maker)],
-            internalCode: data[indexes.internalCode].trim(),
-            qtyInBox: StringParser.getQty(data[SatauData._properyName(indexes.qtyInBox)]),
-            format: data[SatauData._properyName(indexes.format)],
-            expectedCostUnitPrice: StringParser.getQty(data[SatauData._properyName(indexes.expectedCostUnitPrice)]),
+            name: data[associations.name],
+            category: data[associations.category],
+            maker: data[associations.maker],
+            internalCode: data[associations.internalCode].trim(),
+            qtyInBox: StringParser.getQty(data[associations.qtyInBox]),
+            format: data[associations.format],
+            expectedCostUnitPrice: StringParser.getQty(data[associations.expectedCostUnitPrice]),
             isAvailable: true,
             createdAt: new Date(),
             updatedAt: new Date()
         }
-    },
-    _properyName: function (index) {
-        return "__EMPTY_" + index
     }
 }
 module.exports = SatauData

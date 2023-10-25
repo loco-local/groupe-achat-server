@@ -146,6 +146,12 @@ router.post(
 )
 
 router.post(
+    '/products/provider/:provider/import-associations',
+    isAdmin,
+    ProductUploadController.changeAssociations
+)
+
+router.post(
     '/products/upload/:uploadId/accept',
     isAdmin,
     ProductUploadController.acceptUpload
