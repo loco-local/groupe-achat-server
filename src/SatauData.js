@@ -21,13 +21,17 @@ const SatauData = {
         }, {});
     },
     formatEntry: function (data, associations) {
+        let qtyInBox = StringParser.getQty(data[associations.qtyInBox]);
+        if (qtyInBox === null) {
+            qtyInBox = 1;
+        }
         return {
             provider: "Satau",
             name: data[associations.name],
             category: data[associations.category],
             maker: data[associations.maker],
             internalCode: data[associations.internalCode].trim(),
-            qtyInBox: StringParser.getQty(data[associations.qtyInBox]),
+            qtyInBox: qtyInBox,
             format: data[associations.format],
             expectedCostUnitPrice: StringParser.getQty(data[associations.expectedCostUnitPrice]),
             isAvailable: true,
