@@ -41,6 +41,9 @@ module.exports = (sequelize, DataTypes) => {
                 fields: ['BuyGroupId']
             },
             {
+                fields: ['isPutForward', 'BuyGroupId', {attribute: 'name', order: 'ASC'}]
+            },
+            {
                 fields: ['isAdminRelated']
             }
         ]

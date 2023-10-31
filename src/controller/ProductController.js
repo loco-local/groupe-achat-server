@@ -6,7 +6,10 @@ const ProductController = {
             where: {
                 isPutForward: true,
                 BuyGroupId: buyGroupId
-            }
+            },
+            sort: [
+                ['name', 'ASC']
+            ]
         });
         res.send(products);
     },
@@ -16,7 +19,10 @@ const ProductController = {
             where: {
                 isPutForward: false,
                 BuyGroupId: buyGroupId
-            }
+            },
+            sort: [
+                ['name', 'ASC']
+            ]
         });
         res.send(products);
     },
@@ -26,7 +32,10 @@ const ProductController = {
             where: {
                 isAdminRelated: true,
                 BuyGroupId: buyGroupId
-            }
+            },
+            sort: [
+                ['name', 'ASC']
+            ]
         });
         res.send(products);
     },
