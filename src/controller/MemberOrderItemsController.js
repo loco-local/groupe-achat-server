@@ -130,7 +130,7 @@ const MemberOrderItemsController = {
         memberOrderItem[props.totalAfterRebate] = totalPriceBeforeTaxes;
         memberOrderItem[props.totalAfterRebateWithTaxes] = totalPriceWithTaxes;
         if (shouldCreate) {
-            await MemberOrderItems.create(memberOrderItem);
+            memberOrderItem = await MemberOrderItems.create(memberOrderItem);
         } else {
             if (memberOrderItem.MemberOrderId !== order.id) {
                 return res.sendStatus(401);
@@ -148,6 +148,7 @@ const MemberOrderItemsController = {
         response[props.totalAfterRebateWithTaxes] = totalPriceWithTaxes;
         response.tps = tps;
         response.tvq = tvq;
+        response.id = memberOrderItem.id
         res.send(response);
     },
     _getOrderFromRequest: async (req) => {
