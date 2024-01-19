@@ -69,4 +69,14 @@ describe('HNData', () => {
         Object.keys(entries).length.should.equal(1);
         entries["50005"].expectedCostUnitPrice.should.equal(95.74);
     })
+    it("has right properties when format is on another line", async () => {
+        const entries = HNData.linesToEntries([
+            "SEC 62133 CLM Clever Moscow Mule Sans Alcool",
+            "(12x355ml) 854531000288 1 n/d 30,97$ 3,69$",
+        ])
+        Object.keys(entries).length.should.equal(1);
+        entries["62133"].name.should.equal("Clever Moscow Mule Sans Alcool");
+        entries["62133"].format.should.equal("355ml");
+        entries["62133"].qtyInBox.should.equal("12");
+    })
 });

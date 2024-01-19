@@ -30,14 +30,21 @@ const HNData = {
                 entry.internalCode = internalCode;
                 entry.maker = maker[0];
                 entry.name = HNData.getName(line, entry.maker);
-                const format = HNData.getFormat(line);
-                entry.format = format.format;
-                entry.qtyInBox = format.qtyInBox;
+                let format = HNData.getFormat(line);
+                if (format !== false) {
+                    entry.format = format.format;
+                    entry.qtyInBox = format.qtyInBox;
+                }
                 entry.expectedCostUnitPrice = HNData.getPrice(line);
                 while (entry.expectedCostUnitPrice === null && lineIndex + 1 < lines.length) {
                     lineIndex++;
                     line = lines[lineIndex];
                     entry.expectedCostUnitPrice = HNData.getPrice(line);
+                    if (format === false) {
+                        format = HNData.getFormat(line);
+                        entry.format = format.format;
+                        entry.qtyInBox = format.qtyInBox;
+                    }
                 }
                 isEntryBuilt = true;
             }
@@ -60,13 +67,24 @@ const HNData = {
         if (internalCode === null) {
             return null;
         }
-        const lineAfterInternalCode = line.substring(line.indexOf(internalCode) + internalCode.length + 1, line.indexOf("(")).trim();
+        let formatStartIndex = line.indexOf("(");
+        if (formatStartIndex === -1) {
+            formatStartIndex = line.length
+        }
+        const lineAfterInternalCode = line.substring(line.indexOf(internalCode) + internalCode.length + 1, formatStartIndex).trim();
         return lineAfterInternalCode.match(makerRegex);
     },
     getName: function (line, maker) {
-        return line.substring(line.indexOf(maker) + maker.length + 1, line.indexOf("(")).trim();
+        let formatStartIndex = line.indexOf("(");
+        if (formatStartIndex === -1) {
+            formatStartIndex = line.length
+        }
+        return line.substring(line.indexOf(maker) + maker.length + 1, formatStartIndex).trim();
     },
     getFormat: function (line) {
+        if (line.indexOf("(") === -1) {
+            return false;
+        }
         let format = line.substring(line.indexOf("(") + 1, line.indexOf(")")).trim();
         if (format.indexOf("x") > -1) {
             return {
