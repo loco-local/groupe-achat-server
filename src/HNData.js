@@ -1,6 +1,7 @@
 const internalCodeRegex = /^\d+/;
 const makerRegex = /[A-Z]{3,}/;
-const priceRegex = /\d+\.[0-9]{2}\s\$/g
+const priceRegex = /\$?(\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})?)[\$]/g;
+const legacyPriceRegex = /\d+\.[0-9]{2}\s\$/g
 const HNData = {
     linesToEntries: function (lines) {
         const entries = {}
@@ -24,7 +25,7 @@ const HNData = {
         while (!isEntryBuilt && lineIndex < lines.length) {
             let line = lines[lineIndex];
             const internalCode = HNData.getInternalCode(line);
-            const maker = line.match(makerRegex);
+            const maker = HNData.getMaker(line, internalCode)
             if (internalCode !== null && maker !== null) {
                 entry.internalCode = internalCode;
                 entry.maker = maker[0];
@@ -33,8 +34,8 @@ const HNData = {
                 entry.format = format.format;
                 entry.qtyInBox = format.qtyInBox;
                 entry.expectedCostUnitPrice = HNData.getPrice(line);
-                while(entry.expectedCostUnitPrice === null && lineIndex + 2 < lines.length){
-                    lineIndex ++;
+                while (entry.expectedCostUnitPrice === null && lineIndex + 1 < lines.length) {
+                    lineIndex++;
                     line = lines[lineIndex];
                     entry.expectedCostUnitPrice = HNData.getPrice(line);
                 }
@@ -54,6 +55,13 @@ const HNData = {
         const firstWordRemovedLine = line.substring(line.indexOf(" ") + 1);
         const internalCode = firstWordRemovedLine.match(internalCodeRegex);
         return internalCode === null ? internalCode : internalCode[0];
+    },
+    getMaker: function (line, internalCode) {
+        if (internalCode === null) {
+            return null;
+        }
+        const lineAfterInternalCode = line.substring(line.indexOf(internalCode) + internalCode.length + 1, line.indexOf("(")).trim();
+        return lineAfterInternalCode.match(makerRegex);
     },
     getName: function (line, maker) {
         return line.substring(line.indexOf(maker) + maker.length + 1, line.indexOf("(")).trim();
@@ -75,10 +83,16 @@ const HNData = {
     getPrice: function (line) {
         let price = line.match(priceRegex);
         if (price === null) {
+            price = line.match(legacyPriceRegex);
+        }
+        if (price === null) {
             return null;
         }
         price = price[0];
-        return parseFloat(price.substring(0, price.indexOf(" ")));
+        price = price.replaceAll(",", ".");
+        price = price.replaceAll(" ", "");
+        price = price.replaceAll("$", "");
+        return parseFloat(price);
     }
 }
 module.exports = HNData

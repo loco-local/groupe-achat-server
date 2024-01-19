@@ -9,27 +9,27 @@ describe('HNData', () => {
     });
     it("retrieves maker", async () => {
         const entries = HNData.linesToEntries([
-            "Sec 51060 ABK Abricots Bio (2.5kg)",
+            "SEC 51266 ABK Abricots Bio (12.5kg) Vrac B SO vrac 1 n/d 185,36$ 264,80$",
             "Sec 87651 BONE Bouillon D'Os Instant Thaï Noix De Coco (9x80g) SG SO 814574001871 1 n/d 60.00 $ 9.99 $"
         ])
-        entries["51060"].maker.should.equal("ABK");
+        entries["51266"].maker.should.equal("ABK");
         entries["87651"].maker.should.equal("BONE");
     });
     it("retrieves name", async () => {
         const entries = HNData.linesToEntries([
-            "Sec 51060 ABK Abricots Bio (2.5kg)",
+            "SEC 51266 ABK Abricots Bio (12.5kg) Vrac B SO vrac 1 n/d 185,36$ 264,80$",
             "Sec 87651 BONE Bouillon D'Os Instant Thaï Noix De Coco (9x80g) SG SO 814574001871 1 n/d 60.00 $ 9.99 $"
         ])
-        entries["51060"].name.should.equal("Abricots Bio");
+        entries["51266"].name.should.equal("Abricots Bio");
         entries["87651"].name.should.equal("Bouillon D'Os Instant Thaï Noix De Coco");
     });
     it("retrieves format", async () => {
         const entries = HNData.linesToEntries([
-            "Sec 51060 ABK Abricots Bio (2.5kg)",
+            "SEC 51266 ABK Abricots Bio (12.5kg) Vrac B SO vrac 1 n/d 185,36$ 264,80$",
             "Sec 87651 BONE Bouillon D'Os Instant Thaï Noix De Coco (9x80g) SG SO 814574001871 1 n/d 60.00 $ 9.99 $"
         ])
-        entries["51060"].format.should.equal("2.5kg");
-        entries["51060"].qtyInBox.should.equal(1);
+        entries["51266"].format.should.equal("12.5kg");
+        entries["51266"].qtyInBox.should.equal(1);
         entries["87651"].format.should.equal("80g");
         entries["87651"].qtyInBox.should.equal("9");
     });
@@ -55,4 +55,18 @@ describe('HNData', () => {
         ])
         Object.values(entries).length.should.equal(1);
     });
+    it("can parse price with comma and no space between dollar sign and amount", async () => {
+        const price = HNData.getPrice("1 n/d 95,74$ 34,19$");
+        price.should.equal(95.74)
+    })
+    it("can get price when price is 3 lines after internal code", async () => {
+        const entries = HNData.linesToEntries([
+            "SEC 50005 ABK Café Moulu Corsé Bio & Équitable",
+            "(4x908g)",
+            "B SO 067486320107",
+            "1 n/d 95,74$ 34,19$",
+        ])
+        Object.keys(entries).length.should.equal(1);
+        entries["50005"].expectedCostUnitPrice.should.equal(95.74);
+    })
 });
