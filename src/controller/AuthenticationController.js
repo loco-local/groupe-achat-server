@@ -5,6 +5,7 @@ const crypto = require('crypto')
 const sprintf = require('sprintf-js').sprintf
 const EmailClient = require('../EmailClient')
 const {v4: uuidv4} = require('uuid');
+const {Op} = require('sequelize')
 
 const resetPasswordEn = {
     from: 'horizonsgaspesiens@gmail.com',
@@ -158,7 +159,9 @@ const AuthenticationController = {
             Members.findOne({
                 where: {
                     resetPasswordToken: req.body.token,
-                    resetPasswordExpires: {$gt: Date.now()}
+                    resetPasswordExpires: {
+                        [Op.gte]: Date.now()
+                    }
                 }
             }).then(function (user) {
                 return res.sendStatus(
@@ -172,38 +175,31 @@ const AuthenticationController = {
             })
         }
         ,
-        changePassword: function (req, res) {
+        changePassword: async function (req, res) {
             const {token, newPassword} = req.body
             if (!token) {
                 return res.sendStatus(
                     403
                 )
             }
-            Members.findOne({
+            const member = await Members.findOne({
                 where: {
                     resetPasswordToken: token,
-                    resetPasswordExpires: {$gt: Date.now()}
+                    resetPasswordExpires: {
+                        [Op.gte]: Date.now()
+                    }
                 }
-            }).then(function (user) {
-                if (!user) {
-                    return res.sendStatus(
-                        403
-                    )
-                }
-                user.password = newPassword
-                user.resetPasswordToken = null
-                user.resetPasswordExpires = null
-                return user.save();
-            }).then(function () {
-                return res.sendStatus(
-                    200
-                )
-            }).catch(function (err) {
-                console.log(err)
-                res.status(500).send({
-                    error: 'error'
-                })
             })
+            if (!member) {
+                return res.sendStatus(
+                    403
+                )
+            }
+            member.password = newPassword
+            member.resetPasswordToken = null
+            member.resetPasswordExpires = null
+            await member.save();
+            res.sendStatus(200);
         }
         ,
         emailExists: function (req, res) {
