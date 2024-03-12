@@ -1,4 +1,5 @@
 const {Products} = require('../model')
+const {Op} = require('sequelize')
 const ProductController = {
     listPutForward: async (req, res) => {
         const buyGroupId = parseInt(req.params['buyGroupId']);
@@ -40,29 +41,25 @@ const ProductController = {
         res.send(products);
     },
     putForward: async (req, res) => {
-        const products = req.body;
-        await Promise.all(products.map(async (product) => {
-            await Products.update({
-                isPutForward: true,
-            }, {
-                where: {
-                    id: product.id
-                }
-            });
-        }));
+        const productsId = req.body;
+        await Products.update({
+            isPutForward: true,
+        }, {
+            where: {
+                id: productsId
+            }
+        });
         res.sendStatus(200);
     },
     deprecate: async (req, res) => {
-        const products = req.body;
-        await Promise.all(products.map(async (product) => {
-            await Products.update({
-                isPutForward: false,
-            }, {
-                where: {
-                    id: product.id
-                }
-            });
-        }));
+        const productsId = req.body;
+        await Products.update({
+            isPutForward: false,
+        }, {
+            where: {
+                id: productsId
+            }
+        });
         res.sendStatus(200);
     },
     makeAvailable: async (req, res) => {
