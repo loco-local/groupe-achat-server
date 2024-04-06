@@ -16,7 +16,7 @@
     }
   },
   "authentication": {
-    "jwtSecret": "d9304651-fb3c-4177-8635-dcda56672bc7"
+    "jwtSecret": "5cab36db-957b-439f-b63b-1f4ce59ae8b7"
   },
   "sendgrid": "mock",
   "recaptchaV3Key" : "",
