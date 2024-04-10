@@ -4,7 +4,8 @@ module.exports = function (req, res, next) {
     passport.authenticate('jwt', async function (err, user) {
         if (err || !user) {
             res.status(401).send({
-                error: 'you do not have access to this resource'
+                error: 'you do not have access to this resource',
+                errorName: 'needToBeAuthenticated'
             })
             return;
         }
