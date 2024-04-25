@@ -4,6 +4,7 @@ const xlsx = require("xlsx");
 const SatauData = require("../SatauData");
 const {Products, ProductsUpload, ProductsImportAssociations} = require("../model");
 const HNData = require("../HNData");
+const QuantityInterpreter = require("../QuantityInterpreter");
 const ProductUploadController = {
     uploadSatauProducts: async (req, res) => {
         let uploadedFile = req.files.file;
@@ -63,7 +64,9 @@ const ProductUploadController = {
         }, {});
         entries = Object.values(entries).map((product) => {
             const productInDb = productsOfHN[product.internalCode];
-            if (productInDb === undefined) {
+            if (!QuantityInterpreter.isFormatValid(product.format)) {
+                product.action = "wrongFormat"
+            } else if (productInDb === undefined) {
                 product.action = "create"
             } else if (productInDb.expectedCostUnitPrice !== product.expectedCostUnitPrice) {
                 product.action = "updatePrice"
@@ -180,7 +183,9 @@ const ProductUploadController = {
         }, {});
         formattedData = Object.values(formattedData).map((product) => {
             const productInDb = productsOfSatau[product.internalCode];
-            if (productInDb === undefined) {
+            if (!QuantityInterpreter.isFormatValid(product.format)) {
+                product.action = "wrongFormat"
+            } else if (productInDb === undefined) {
                 product.action = "create"
             } else if (productInDb.expectedCostUnitPrice !== product.expectedCostUnitPrice) {
                 product.action = "updatePrice"
