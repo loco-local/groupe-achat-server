@@ -50,6 +50,12 @@ router.get(
     MemberController.get
 )
 
+router.get(
+    '/members/:memberId/public',
+    isAuthenticated,
+    MemberController.getPublic
+)
+
 router.put(
     '/members/:memberId',
     isAuthenticated,

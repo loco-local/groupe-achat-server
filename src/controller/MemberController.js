@@ -14,6 +14,16 @@ const MemberController = {
         })
         res.send(user);
     },
+    getPublic: async (req, res) => {
+        const memberId = parseInt(req.params['memberId']);
+        const user = await Members.findOne({
+            where: {
+                id: memberId
+            },
+            attributes: Members.getPublicAttributes()
+        })
+        res.send(user);
+    },
     update: async (req, res) => {
         const memberId = parseInt(req.params['memberId']);
         if (memberId !== req.user.id && req.user.status !== "admin") {

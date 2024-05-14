@@ -56,6 +56,10 @@ module.exports = (sequelize, DataTypes) => {
         return ["uuid", "locale", "firstname", "lastname", "status", "BuyGroupId"]
     };
 
+    Member.getPublicAttributes = function () {
+        return ["locale", "firstname", "lastname"]
+    };
+
     Member.defineAssociationsUsingModels = function (model, models) {
         model.belongsTo(models.BuyGroups);
     };
