@@ -72,7 +72,7 @@ const AuthenticationController = {
                 uuid: uuidv4(),
                 firstname: req.body.firstname,
                 lastname: req.body.lastname,
-                email: req.body.email.toLowerCase(),
+                email: req.body.email.toLowerCase().trim(),
                 phone1: req.body.phone1,
                 phone2: req.body.phone2,
                 address: req.body.address,
@@ -87,7 +87,7 @@ const AuthenticationController = {
                     uuid: member.uuid,
                     firstname: member.firstname,
                     lastname: member.lastname,
-                    email: member.email.toLowerCase(),
+                    email: member.email.toLowerCase().trim(),
                     phone1: member.phone1,
                     phone2: member.phone2,
                     address: member.address,
@@ -105,7 +105,7 @@ const AuthenticationController = {
                     uuid: user.uuid,
                     firstname: user.firstname,
                     lastname: user.lastname,
-                    email: user.email.toLowerCase(),
+                    email: user.email.toLowerCase().trim(),
                     status: user.status,
                     BuyGroupId: user.BuyGroupId
                 },
@@ -114,14 +114,14 @@ const AuthenticationController = {
         },
         async resetPassword(req, res) {
             const {email, locale} = req.body
-            const token = await AuthenticationController._resetPassword(email.toLowerCase());
+            const token = await AuthenticationController._resetPassword(email.toLowerCase().trim());
             if (!token) {
                 return res.sendStatus(400);
             }
             const emailText = locale === 'fr' ? resetPasswordFr : resetPasswordEn
             const emailContent = {
                 from: EmailClient.buildFrom(emailText.from),
-                to: email,
+                to: email.toLowerCase().trim(),
                 subject: emailText.subject,
                 html: sprintf(
                     emailText.content,
@@ -143,7 +143,7 @@ const AuthenticationController = {
             const token = crypto.randomBytes(32).toString('hex')
             const user = await Members.findOne({
                 where: {
-                    email: email.toLowerCase()
+                    email: email.toLowerCase().trim()
                 }
             });
             if (!user) {
@@ -211,7 +211,7 @@ const AuthenticationController = {
             }
             Members.findOne({
                 where: {
-                    email: email.toLowerCase()
+                    email: email.toLowerCase().trim()
                 },
                 attributes: ['email', 'uuid', 'locale', 'firstName', 'lastName']
             }).then(function (user) {
