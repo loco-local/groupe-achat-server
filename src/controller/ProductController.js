@@ -145,7 +145,21 @@ const ProductController = {
             isAdminRelated: product.isAdminRelated,
         }, {
             where: {
-                id: product.id
+                id: product.id,
+                BuyGroupId: parseInt(req.user.BuyGroupId)
+            }
+        });
+        res.sendStatus(200);
+    },
+    async updateCostUnitPrice(req, res) {
+        const productId = parseInt(req.params['productId']);
+        const costUnitPrice = req.body.costUnitPrice
+        await Products.update({
+            expectedCostUnitPrice: costUnitPrice
+        }, {
+            where: {
+                id: productId,
+                BuyGroupId: parseInt(req.user.BuyGroupId)
             }
         });
         res.sendStatus(200);

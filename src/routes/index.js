@@ -86,6 +86,12 @@ router.put(
     ProductController.updateProduct
 )
 
+router.put(
+    '/products/:productId/costUnitPrice',
+    isAdmin,
+    ProductController.updateCostUnitPrice
+)
+
 router.get(
     '/buy-group/path/:buyGroupPath',
     BuyGroupController.getForPath
